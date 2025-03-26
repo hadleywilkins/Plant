@@ -28,7 +28,7 @@ struct Provider: AppIntentTimelineProvider {
             entries.append(entry)
         }
 
-        return Timeline(entries: entries, policy: .atEnd)
+        return Timeline(entries: entries, policy: .never)
     }
 
 //    func relevances() async -> WidgetRelevances<ConfigurationAppIntent> {
@@ -45,13 +45,22 @@ struct PlantWidgetEntryView : View {
     var entry: Provider.Entry
 
     var body: some View {
-        VStack {
-            Text("Time:")
-            Text(entry.date, style: .time)
+        ZStack{
+            ContainerRelativeShape()
+                .fill(.green.gradient)
+            
+            VStack {
+                Text(entry.date, style: .time)
 
-            Text("Favorite Emoji:")
-            Text(entry.configuration.favoriteEmoji)
+                Text("Favorite Emoji:")
+                Text(entry.configuration.favoriteEmoji)
+                
+                HStack{
+                    Text("🥲")
+                }
+            }
         }
+        
     }
 }
 
