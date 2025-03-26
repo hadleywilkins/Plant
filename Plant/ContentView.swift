@@ -8,11 +8,20 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var hydrationData = HydrationData()
+    
     var body: some View {
         TabView {
             HomeView()
+                .environmentObject(hydrationData)
                 .tabItem {
                     Label("Home", systemImage: "house")
+                }
+            
+            StatsView()
+                .environmentObject(hydrationData)
+                .tabItem {
+                    Label("Stats", systemImage: "chart.line.uptrend.xyaxis")
                 }
 
             SettingsView()
