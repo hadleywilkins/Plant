@@ -25,6 +25,7 @@ struct ContentView: View {
                 }
 
             SettingsView()
+                .environmentObject(hydrationData)
                 .tabItem {
                     Label("Settings", systemImage: "gear")
                 }

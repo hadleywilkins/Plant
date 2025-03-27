@@ -26,14 +26,13 @@ struct HomeView: View {
             ProgressView(value: Double(hydrationData.waterIntake), total: Double(hydrationData.dailyGoal))
                     .progressViewStyle(LinearProgressViewStyle(tint: .blue))
                     .frame(width: 200)
+            
+            Text("\(String(format: "%.1f", hydrationData.getTotalIntake())) / \(String(format: "%.1f", hydrationData.getDailyGoal())) \(hydrationData.unit)")
+                .font(.subheadline)
+                .foregroundColor(.gray)
 
-            Text("\(hydrationData.waterIntake) / \(hydrationData.dailyGoal) glasses")
-                    .font(.subheadline)
-                    .foregroundColor(.gray)
-
-    
             Button(action: {
-                    hydrationData.logGlassOfWater()
+                hydrationData.logGlassOfWater()
             }) {
                 Text("Log a Glass of Water")
                     .padding()

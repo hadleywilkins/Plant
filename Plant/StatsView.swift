@@ -20,9 +20,9 @@ struct StatsView: View {
                 .progressViewStyle(LinearProgressViewStyle(tint: .blue))
                 .frame(width: 250)
 
-        Text("\(hydrationData.waterIntake) / \(hydrationData.dailyGoal) glasses")
-                .font(.subheadline)
-                .foregroundColor(.gray)
+            Text("\(String(format: "%.1f", hydrationData.getTotalIntake())) / \(String(format: "%.1f", hydrationData.getDailyGoal())) \(hydrationData.unit)")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
 
         }
     }
