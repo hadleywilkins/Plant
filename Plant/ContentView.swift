@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
     @StateObject var hydrationData = HydrationData()
+    
+    @Environment(\.modelContext) var context
     
     var body: some View {
         TabView {
