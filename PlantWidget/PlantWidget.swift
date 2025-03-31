@@ -49,6 +49,7 @@ struct PlantWidgetEntryView : View {
             ContainerRelativeShape()
                 .fill(.green.gradient)
             
+            
             VStack {
                 Text(entry.date, style: .time)
 
@@ -56,7 +57,7 @@ struct PlantWidgetEntryView : View {
                 Text(entry.configuration.favoriteEmoji)
                 
                 HStack{
-                    Text("🥲")
+                    Text("☘️")
                 }
             }
         }
