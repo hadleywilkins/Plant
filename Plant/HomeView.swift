@@ -6,11 +6,9 @@
 //
 
 import SwiftUI
-import SwiftData
 
 struct HomeView: View {
-    @Query(sort: \Day.date) var days: [Day]
-    @Query var user: [UserData]
+    @EnvironmentObject var hydrationData: HydrationData
     
     var body: some View {
         VStack(spacing: 20){
@@ -22,29 +20,28 @@ struct HomeView: View {
             Image(systemName: "tree")
                 .imageScale(.large)
                 .foregroundStyle(.green)
-            
             Text("Have you had water today?")
                 .font(.subheadline)
             
-//            ProgressView(value: Double(days[0].intake), total: Double(days[0].goal))
-//                    .progressViewStyle(LinearProgressViewStyle(tint: .blue))
-//                    .frame(width: 200)
+            ProgressView(value: Double(hydrationData.waterIntake), total: Double(hydrationData.dailyGoal))
+                    .progressViewStyle(LinearProgressViewStyle(tint: .blue))
+                    .frame(width: 200)
             
-//            Text("\(String(format: "%.1f", days[0].intake)) / \(String(format: "%.1f", days[0].goal)) \(user[0].unit == 1 ? "oz" : "l")")
-//                .font(.subheadline)
-//                .foregroundColor(.gray)
+            Text("\(String(format: "%.1f", hydrationData.getTotalIntake())) / \(String(format: "%.1f", hydrationData.getDailyGoal())) \(hydrationData.unit)")
+                .font(.subheadline)
+                .foregroundColor(.gray)
 
-//            Button(action: {
-//                days[0].updateIntake(amount:user[0].glassSize)
-//            }) {
-//                Text("Log a Glass of Water")
-//                    .padding()
-//                    .frame(width: 150)
-//                    .background(Color.blue)
-//                    .foregroundColor(.white)
-//                    .cornerRadius(10)
-//            }
-//            .padding(.top, 10)
+            Button(action: {
+                hydrationData.logGlassOfWater()
+            }) {
+                Text("Log a Glass of Water")
+                    .padding()
+                    .frame(width: 150)
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+            }
+            .padding(.top, 10)
 
             Spacer()
         }
