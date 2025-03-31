@@ -8,10 +8,14 @@
 import SwiftUI
 
 class HydrationData: ObservableObject {
-    @Published var waterIntake: Int = 0  // water consumed (in glasses)
+    //@Published var waterIntake: Int = 0  // water consumed (in glasses)
+    @AppStorage("waterIntake", store: UserDefaults(suiteName: "group.reddingSauter.Plant"))
+        var waterIntake: Int = 0
     @Published var dailyGoal: Int = 8  // daily goal (in glasses)
     @Published var unit: String = "oz"  // Default unit
     @Published var glassSize: Double = 8.0
+    
+    
 
     let litersPerOz = 0.0295735
 
