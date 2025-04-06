@@ -6,9 +6,19 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
     @StateObject var hydrationData = HydrationData()
+    private var container: ModelContainer
+    
+    init() {
+        do {
+            container = try ModelContainer(for: WaterDay.self)
+        } catch {
+            fatalError("Failed to initialize ModelContainer: \(error)")
+        }
+    }
     
     var body: some View {
         TabView {
@@ -23,6 +33,7 @@ struct ContentView: View {
                 .tabItem {
                     Label("Stats", systemImage: "chart.line.uptrend.xyaxis")
                 }
+                .modelContainer(container)
 
             SettingsView()
                 .environmentObject(hydrationData)

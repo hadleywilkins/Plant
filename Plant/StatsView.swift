@@ -6,10 +6,13 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct StatsView: View {
     @EnvironmentObject var hydrationData: HydrationData
+    @Environment(\.modelContext) private var context
     
+    @Query private var days: [WaterDay]
     var body: some View {
         VStack(spacing: 20) {
             Text("Hydration Stats")
@@ -23,7 +26,38 @@ struct StatsView: View {
             Text("\(String(format: "%.1f", hydrationData.getTotalIntake())) / \(String(format: "%.1f", hydrationData.getDailyGoal())) \(hydrationData.unit)")
                             .font(.subheadline)
                             .foregroundColor(.gray)
+            Button(action: {
+                addDay()
+            }) {
+                Text("New Day")
+                    .padding()
+                    .frame(width: 150)
+                    .background(Color.green)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+            }
+            
+            List {
+                ForEach(days) { day in
+                    Text("\(day.date): \(day.intake)/\(day.goal)")
+                }
+                .onDelete { indices in
+                    for index in indices {
+                        deleteDay(day: days[index])
+                    }
+            }
+            }
 
         }
+    }
+    
+    func addDay() {
+        let newDay = WaterDay(date: "chewsday", goal:hydrationData.dailyGoal, intake:hydrationData.waterIntake)
+        context.insert(newDay)
+        hydrationData.resetDailyIntake()
+    }
+    
+    func deleteDay(day: WaterDay) {
+        context.delete(day)
     }
 }
