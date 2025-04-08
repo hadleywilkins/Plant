@@ -73,13 +73,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		07D52FA92D8470A7001CF3FF /* Exceptions for "MiniPlant" folder in "MiniPlantExtension" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = 07D52F922D8470A5001CF3FF /* MiniPlantExtension */;
-		};
 		AC1B22632D936CFB0035F7BC /* Exceptions for "PlantWidget" folder in "PlantWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -103,14 +96,6 @@
 		0774375A2D78DDC600D62117 /* PlantUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = PlantUITests;
-			sourceTree = "<group>";
-		};
-		07D52F992D8470A5001CF3FF /* MiniPlant */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				07D52FA92D8470A7001CF3FF /* Exceptions for "MiniPlant" folder in "MiniPlantExtension" target */,
-			);
-			path = MiniPlant;
 			sourceTree = "<group>";
 		};
 		AC1B22502D936CF90035F7BC /* PlantWidget */ = {
@@ -173,7 +158,6 @@
 				0774373F2D78DDC300D62117 /* Plant */,
 				077437502D78DDC500D62117 /* PlantTests */,
 				0774375A2D78DDC600D62117 /* PlantUITests */,
-				07D52F992D8470A5001CF3FF /* MiniPlant */,
 				AC1B22502D936CF90035F7BC /* PlantWidget */,
 				07D52F942D8470A5001CF3FF /* Frameworks */,
 				0774373E2D78DDC300D62117 /* Products */,
@@ -286,9 +270,6 @@
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				07D52F992D8470A5001CF3FF /* MiniPlant */,
 			);
 			name = MiniPlantExtension;
 			packageProductDependencies = (
