@@ -11,8 +11,6 @@ import SwiftData
 struct StatsView: View {
     @EnvironmentObject var hydrationData: HydrationData
     @Environment(\.modelContext) private var context
-    var dateComponents = DateComponents()
-    let currentDateTime = Date()
     
     @Query private var days: [WaterDay]
     var body: some View {
@@ -41,7 +39,7 @@ struct StatsView: View {
             
             List {
                 ForEach(days) { day in
-                    Text("\(formattedDate(day.date)): \(day.intake)/\(day.goal)")
+                    Text("\(day.date): \(day.intake)/\(day.goal)")
                 }
                 .onDelete { indices in
                     for index in indices {
@@ -54,18 +52,12 @@ struct StatsView: View {
     }
     
     func addDay() {
-        let newDay = WaterDay(date: Date(), goal:hydrationData.dailyGoal, intake:hydrationData.waterIntake)
+        let newDay = WaterDay(date: "chewsday", goal:hydrationData.dailyGoal, intake:hydrationData.waterIntake)
         context.insert(newDay)
         hydrationData.resetDailyIntake()
     }
     
     func deleteDay(day: WaterDay) {
         context.delete(day)
-    }
-    
-    func formattedDate(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        return formatter.string(from: date)
     }
 }
