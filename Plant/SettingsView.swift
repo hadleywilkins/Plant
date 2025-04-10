@@ -27,12 +27,22 @@ struct SettingsView: View {
                             }
                             .pickerStyle(SegmentedPickerStyle())
                             
-                            Stepper("Glass Size: \(String(format: "%.1f", hydrationData.glassSize)) oz",
-                                    value: $hydrationData.glassSize, in: 4...32, step: 2)
-                            Text("Adjust the size of a single glass of water (in ounces).")
-                                .font(.subheadline)
-                                .foregroundColor(.gray)
-                        }
+                    if (hydrationData.unit == "oz") {
+                        Stepper("Glass Size: \(String(format: "%.1f", hydrationData.glassSize)) oz",
+                                value: $hydrationData.glassSize, in: 4...32, step: 2)
+                        Text("Adjust the size of a single glass of water (in ounces).")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
+                    
+                    if (hydrationData.unit == "L") {
+                        Stepper("Glass Size: \(String(format: "%.1f", hydrationData.glassSize)) L",
+                                value: $hydrationData.glassSize, in: 0.5 ... 5, step: 0.5)
+                        Text("Adjust the size of a single glass of water (in ounces).")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
+                    }
                         
                     }
                     .navigationTitle("Settings")
