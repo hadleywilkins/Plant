@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import Charts
 
 struct StatsView: View {
     @EnvironmentObject var hydrationData: HydrationData
@@ -36,6 +37,15 @@ struct StatsView: View {
                     .background(Color.green)
                     .foregroundColor(.white)
                     .cornerRadius(10)
+            }
+            
+            Chart {
+                ForEach(days) { day in
+                    BarMark(
+                        x: .value("Date", formattedDate(day.date)),
+                        y: .value("Intake", day.intake)
+                    )
+                }
             }
             
             List {
