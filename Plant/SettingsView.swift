@@ -37,7 +37,7 @@ struct SettingsView: View {
                     
                     if (hydrationData.unit == "L") {
                         Stepper("Glass Size: \(String(format: "%.1f", hydrationData.glassSize)) L",
-                                value: $hydrationData.glassSize, in: 0.5 ... 5, step: 0.5)
+                                value: $hydrationData.glassSize, in: 0.25 ... 2, step: 0.25)
                         Text("Adjust the size of a single glass of water (in ounces).")
                             .font(.subheadline)
                             .foregroundColor(.gray)
