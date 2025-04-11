@@ -42,6 +42,18 @@ struct HomeView: View {
                     .cornerRadius(10)
             }
             .padding(.top, 10)
+            
+            Button(action: {
+                hydrationData.resetDailyIntake()
+            }) {
+                Text("Reset")
+                    .padding()
+                    .frame(width: 150)
+                    .background(Color.red)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+            }
+            .padding(.top, 10)
 
             Spacer()
         }
