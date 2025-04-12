@@ -15,6 +15,7 @@ struct StatsView: View {
     let currentDate = Date()
     
     @Query private var days: [WaterDay]
+    
     var body: some View {
         VStack(spacing: 20) {
             Text("Hydration Stats")
@@ -25,9 +26,10 @@ struct StatsView: View {
                 .progressViewStyle(LinearProgressViewStyle(tint: .blue))
                 .frame(width: 250)
 
-            Text("\(String(format: "%.1f", hydrationData.getTotalIntake())) / \(String(format: "%.1f", hydrationData.getDailyGoal())) \(hydrationData.unit)")
+            Text("\(hydrationData.getTotalIntakeFormatted()) / \(hydrationData.getDailyGoalFormatted())")
                             .font(.subheadline)
                             .foregroundColor(.gray)
+            
             Button(action: {
                 addDay()
             }) {
@@ -48,6 +50,7 @@ struct StatsView: View {
                 }
             }
             
+            //Storing as raw type in water day which is good for graph, but need formated type for this part of display
             List {
                 ForEach(days) { day in
                     Text("\(formattedDate(day.date)): \(day.intake)/\(day.goal)")

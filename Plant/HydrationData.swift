@@ -9,46 +9,46 @@ import SwiftUI
 
 class HydrationData: ObservableObject {
     
-    @AppStorage("waterIntake") var waterIntake: Int = 0
-    @AppStorage("dailyGoal") var dailyGoal: Int = 8  // daily goal (in glasses)
+    @AppStorage("waterIntake") var waterIntake: Double = 0 //Store in mL
+    @AppStorage("dailyGoal") var dailyGoal: Double = 2000  // daily goal (in mL)
     @AppStorage("unit") var unit: Unit = .ounces  // Default unit
-    @AppStorage("glassSize") var glassSize: Double = 8.0
-
-    let litersPerOz = 0.0295735
+    @AppStorage("glassSize") var glassSize: Double = 250 // Default glass size in mL
     
     // hd.unit.format(amountInMilliliters: hd.dailyGoal)
     
     enum Unit: String {
         case ounces = "oz"
         case liters = "L"
-        
+
         func format(amountInMilliliters: Double) -> String {
             switch self {
-                case .ounces:
-                    return "\(amountInMilliliters / 1000.0) L"
                 case .liters:
-                    return "\(amountInMilliliters / 1234.0) oz"
+                    let liters = amountInMilliliters / 1000
+                    return "\(String(format: "%.2f", liters)) L"
+                case .ounces:
+                    let ounces = amountInMilliliters / 29.5735
+                    return "\(String(format: "%.1f", ounces)) oz"
             }
         }
-        func format(amountInMilliliters: Double) -> Double {
+        func value(amountInMilliliters: Double) -> Double {
             switch self {
                 case .ounces:
-                    return amountInMilliliters / 1000.0
+                    return amountInMilliliters / 29.5735
                 case .liters:
-                    return amountInMilliliters / 1234.0
+                    return amountInMilliliters / 1000.0
             }
         }
     }
 
     func logGlassOfWater() {
         if waterIntake < dailyGoal {
-            waterIntake += 1
+            waterIntake += glassSize
             
 //            defaults.set(waterIntake, forKey: "intake")
         }
     }
     
-    func updateDailyGoal(newGoal: Int) {
+    func updateDailyGoal(newGoal: Double) {
         dailyGoal = newGoal
     }
     
@@ -56,21 +56,16 @@ class HydrationData: ObservableObject {
         unit = newUnit
     }
     
-        func updateGlassSize(newSize: Double) {
-            glassSize = newSize
-        }
-
-    func getTotalIntake() -> Double {
-        let totalOz = Double(waterIntake) * glassSize
-        // return unit == "oz" ? totalOz : totalOz * litersPerOz
-        
-        return unit.format(amountInMilliliters: totalOz)
+    func updateGlassSize(newSize: Double) {
+        glassSize = newSize
     }
 
-    func getDailyGoal() -> Double {
-        let goalOz = Double(dailyGoal) * glassSize
-        // return unit == "oz" ? goalOz : goalOz * litersPerOz
-        return unit.format(amountInMilliliters: goalOz)
+    func getTotalIntakeFormatted() -> String {
+        return unit.format(amountInMilliliters: waterIntake)
+    }
+
+    func getDailyGoalFormatted() -> String {
+        return unit.format(amountInMilliliters: dailyGoal)
     }
 
     func resetDailyIntake() {

@@ -9,44 +9,58 @@ import SwiftUI
 
 struct SettingsView: View {
     @EnvironmentObject var hydrationData: HydrationData
-
+    
     var body: some View {
         NavigationView {
             Form {
                 Section(header: Text("Hydration Goal")) {
-                    Stepper("Daily Goal: \(hydrationData.dailyGoal) glasses", value: $hydrationData.dailyGoal, in: 4...20, step: 1)
-                        Text("Set your daily water intake goal based on your needs.")
-                            .font(.subheadline)
-                            .foregroundColor(.gray)
-                        }
-
+                    //Stepper gets a little weird when adjusting units until back in base values, not sure how to fix/if needed at this point
+                    Stepper("Daily Goal: \(hydrationData.unit.format(amountInMilliliters: hydrationData.dailyGoal))",
+                            value: Binding(
+                                get: {hydrationData.unit.value(amountInMilliliters: hydrationData.dailyGoal)
+                                },
+                                set: { newValue in
+                                    let newGoalInML = hydrationData.unit == .ounces ? newValue * 29.5735 : newValue * 1000
+                                    hydrationData.updateDailyGoal(newGoal: newGoalInML)
+                                }
+                            ),
+                            in: hydrationData.unit == .ounces ? 32...160 : 1...5,
+                            step: hydrationData.unit == .ounces ? 8 : 0.25
+                    )
+                    Text("Set your daily water intake goal based on your needs.")
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                }
+                
                 Section(header: Text("Measurement Units")) {
                     Picker("Unit", selection: $hydrationData.unit) {
-                        Text("Ounces (oz)").tag("oz")
-                            Text("Liters (L)").tag("L")
-                            }
-                            .pickerStyle(SegmentedPickerStyle())
-                            
-                    if (hydrationData.unit == "oz") {
-                        Stepper("Glass Size: \(String(format: "%.1f", hydrationData.glassSize)) oz",
-                                value: $hydrationData.glassSize, in: 4...32, step: 2)
-                        Text("Adjust the size of a single glass of water (in ounces).")
-                            .font(.subheadline)
-                            .foregroundColor(.gray)
+                        Text("Ounces (oz)").tag(HydrationData.Unit.ounces)
+                        Text("Liters (L)").tag(HydrationData.Unit.liters)
                     }
+                    .pickerStyle(SegmentedPickerStyle())
                     
-                    if (hydrationData.unit == "L") {
-                        Stepper("Glass Size: \(String(format: "%.1f", hydrationData.glassSize)) L",
-                                value: $hydrationData.glassSize, in: 0.25 ... 2, step: 0.25)
-                        Text("Adjust the size of a single glass of water (in ounces).")
-                            .font(.subheadline)
-                            .foregroundColor(.gray)
-                    }
-                    }
-                        
-                    }
-                    .navigationTitle("Settings")
+                    Stepper("Glass Size: \(hydrationData.unit.format(amountInMilliliters: hydrationData.glassSize))",
+                            value: Binding(
+                                get: {
+                                    hydrationData.unit.value(amountInMilliliters: hydrationData.glassSize)
+                                },
+                                set: { newValue in
+                                    let newSizeInML = hydrationData.unit == .ounces ? newValue * 29.5735 : newValue * 1000
+                                    hydrationData.updateGlassSize(newSize: newSizeInML)
+                                }
+                            ),
+                            in: hydrationData.unit == .ounces ? 4...32 : 0.25...2,
+                            step: hydrationData.unit == .ounces ? 2 : 0.25
+                    )
+                    
+                    Text("Adjust the size of a single glass of water.")
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
                 }
             }
+            .navigationTitle("Settings")
         }
+    }
+}
+
 

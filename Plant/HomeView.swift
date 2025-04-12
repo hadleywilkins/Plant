@@ -20,6 +20,7 @@ struct HomeView: View {
             Image(systemName: "tree")
                 .imageScale(.large)
                 .foregroundStyle(.green)
+            
             Text("Have you had water today?")
                 .font(.subheadline)
             
@@ -27,7 +28,7 @@ struct HomeView: View {
                     .progressViewStyle(LinearProgressViewStyle(tint: .blue))
                     .frame(width: 200)
             
-            Text("\(String(format: "%.1f", hydrationData.getTotalIntake())) / \(String(format: "%.1f", hydrationData.getDailyGoal())) \(hydrationData.unit)")
+            Text("\(hydrationData.unit.format(amountInMilliliters: hydrationData.waterIntake)) / \(hydrationData.unit.format(amountInMilliliters: hydrationData.dailyGoal))")
                 .font(.subheadline)
                 .foregroundColor(.gray)
 

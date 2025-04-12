@@ -13,10 +13,10 @@ class WaterDay {
     // TODO: figure out how the Date() class works
 //    @Attribute(.unique)
     var date: Date
-    var goal: Int
-    var intake: Int
+    var goal: Double
+    var intake: Double
     
-    init(date: Date, goal: Int, intake: Int) {
+    init(date: Date, goal: Double, intake: Double) {
         self.goal = goal
         self.intake = intake
         self.date = date
