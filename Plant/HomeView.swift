@@ -12,7 +12,10 @@ class PlantGrow: SKScene {
     private var plantNode: SKSpriteNode!
 
     override func didMove(to view: SKView) {
-        backgroundColor = .clear
+        self.backgroundColor = .clear
+        // to allow sub-elements to be transparent (i think):
+//        view.backgroundColor = .clear
+//        view.allowsTransparency = true
         plantNode = SKSpriteNode(imageNamed: "plant")
         plantNode.position = CGPoint(x: size.width / 2, y: size.height / 2)
         plantNode.setScale(0.20) // Optional: adjust size
@@ -25,7 +28,7 @@ struct HomeView: View {
     
     var plant: SKScene {
         let scene = PlantGrow()
-        scene.size = CGSize(width: 300, height: 400)
+        scene.size = CGSize(width: 300, height: 300)
         scene.scaleMode = .fill
         return scene
     }
@@ -38,8 +41,10 @@ struct HomeView: View {
                 .font(.largeTitle)
                 .fontWeight(.bold)
             
-            SpriteView(scene: plant)
-                .frame(width: 300, height: 400)
+            SpriteView(scene: plant, options: [.allowsTransparency])
+                .frame(width: 300, height: 300)
+            // good for debugging/tuning layout:
+//                .border(Color.black, width: 1)
             
             Text("Have you had water today?")
                 .font(.subheadline)
