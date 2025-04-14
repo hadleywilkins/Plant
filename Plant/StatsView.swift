@@ -45,7 +45,7 @@ struct StatsView: View {
                 ForEach(days) { day in
                     BarMark(
                         x: .value("Date", formattedDate(day.date)),
-                        y: .value("Intake", day.intake)
+                        y: .value("Intake", hydrationData.unit.value(amountInMilliliters: day.intake))
                     )
                 }
             }
@@ -53,7 +53,7 @@ struct StatsView: View {
             //Storing as raw type in water day which is good for graph, but need formated type for this part of display
             List {
                 ForEach(days) { day in
-                    Text("\(formattedDate(day.date)): \(day.intake)/\(day.goal)")
+                    Text("\(formattedDate(day.date)): \(hydrationData.unit.format(amountInMilliliters: day.intake))/\(hydrationData.unit.format(amountInMilliliters: day.goal))")
                 }
                 .onDelete { indices in
                     for index in indices {
