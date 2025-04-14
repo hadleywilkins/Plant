@@ -6,11 +6,36 @@
 //
 
 import SwiftUI
+import SpriteKit
+
+class PlantGrow: SKScene {
+    private var plantNode: SKSpriteNode!
+
+    override func didMove(to view: SKView) {
+        backgroundColor = .gray
+        plantNode = SKSpriteNode(imageNamed: "plant")
+        plantNode.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        plantNode.setScale(0.5) // Optional: adjust size
+
+        addChild(plantNode)
+    }
+}
 
 struct HomeView: View {
+    
+    var scene:SKScene{
+        let scene = PlantGrow()
+        scene.size = CGSize(width:300,height:400)
+        scene.scaleMode = .fill
+        return scene
+    }
     @EnvironmentObject var hydrationData: HydrationData
     
     var body: some View {
+        
+        SpriteView(scene: scene)
+            .frame(width:300,height:400)
+        
         VStack(spacing: 20){
             Text("Home")
                 .font(.largeTitle)
