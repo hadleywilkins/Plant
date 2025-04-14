@@ -12,10 +12,10 @@ class PlantGrow: SKScene {
     private var plantNode: SKSpriteNode!
 
     override func didMove(to view: SKView) {
-        backgroundColor = .gray
+        backgroundColor = .clear
         plantNode = SKSpriteNode(imageNamed: "plant")
         plantNode.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        plantNode.setScale(0.5) // Optional: adjust size
+        plantNode.setScale(0.20) // Optional: adjust size
 
         addChild(plantNode)
     }
