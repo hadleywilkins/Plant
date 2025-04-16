@@ -38,6 +38,16 @@ class HydrationData: ObservableObject {
                     return amountInMilliliters / 1000.0
             }
         }
+        
+        func roundForDisplay(amountInMilliliters: Double, ounceRound: Double, literRound: Double) -> Double {
+            switch self {
+                case .ounces:
+                    return (round(value(amountInMilliliters: amountInMilliliters) / ounceRound) * ounceRound)
+                case .liters:
+                    return (round(value(amountInMilliliters: amountInMilliliters) / literRound) * literRound)
+            }
+        }
+        
     }
 
     func logGlassOfWater() {
