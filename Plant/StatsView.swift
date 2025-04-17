@@ -12,6 +12,7 @@ import Charts
 struct StatsView: View {
     @EnvironmentObject var hydrationData: HydrationData
     @Environment(\.modelContext) private var context
+    @AppStorage("lastLoggedDate") var lastLoggedDate: String = ""
     let currentDate = Date()
     
     @Query private var days: [WaterDay]
@@ -61,10 +62,26 @@ struct StatsView: View {
                     }
             }
             }
+            //only checks when stat view is opened, refactor to on home view opened
+            .onAppear {
+                 checkAndResetIfNewDay()
+            }
 
         }
     }
     
+    func checkAndResetIfNewDay() {
+        let today = formattedDate(currentDate)
+        if today != lastLoggedDate {
+            if hydrationData.waterIntake > 0 { // Save previous day if intake exists
+                addDay()
+            }
+            hydrationData.resetDailyIntake()
+            lastLoggedDate = today
+        }
+    }
+    
+    //adds current date rather than previous, refactor to store yesterday
     func addDay() {
         let newDay = WaterDay(date: currentDate, goal:hydrationData.dailyGoal, intake:hydrationData.waterIntake)
         context.insert(newDay)
