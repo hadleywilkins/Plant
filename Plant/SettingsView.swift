@@ -13,11 +13,12 @@ struct SettingsView: View {
     var body: some View {
         NavigationView {
             Form {
+                //TODO:switch to use helper function
                 Section(header: Text("Hydration Goal")) {
-                    //Stepper gets a little weird when adjusting units until back in base values, not sure how to fix/if needed at this point
-                    Stepper("Daily Goal: \(hydrationData.unit.format(amountInMilliliters: hydrationData.dailyGoal))",
+                    Stepper("Daily Goal: \(String(format: "%.2f", hydrationData.unit.roundForDisplay(amountInMilliliters: hydrationData.dailyGoal, ounceRound: 8, literRound: 0.25))) \(hydrationData.unit.rawValue)",
                             value: Binding(
-                                get: {hydrationData.unit.value(amountInMilliliters: hydrationData.dailyGoal)
+                                get: {
+                                    hydrationData.unit.roundForDisplay(amountInMilliliters: hydrationData.dailyGoal, ounceRound: 8, literRound: 0.25)
                                 },
                                 set: { newValue in
                                     let newGoalInML = hydrationData.unit == .ounces ? newValue * 29.5735 : newValue * 1000
@@ -39,10 +40,10 @@ struct SettingsView: View {
                     }
                     .pickerStyle(SegmentedPickerStyle())
                     
-                    Stepper("Glass Size: \(hydrationData.unit.format(amountInMilliliters: hydrationData.glassSize))",
+                    Stepper("Glass Size: \(String(format: "%.2f",hydrationData.unit.roundForDisplay(amountInMilliliters: hydrationData.glassSize, ounceRound: 2, literRound: 0.25))) \(hydrationData.unit.rawValue)",
                             value: Binding(
                                 get: {
-                                    hydrationData.unit.value(amountInMilliliters: hydrationData.glassSize)
+                                    hydrationData.unit.roundForDisplay(amountInMilliliters: hydrationData.glassSize, ounceRound: 2, literRound: 0.25)
                                 },
                                 set: { newValue in
                                     let newSizeInML = hydrationData.unit == .ounces ? newValue * 29.5735 : newValue * 1000
