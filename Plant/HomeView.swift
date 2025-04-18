@@ -10,28 +10,39 @@ import SpriteKit
 
 class PlantGrow: SKScene {
     private var plantNode: SKSpriteNode!
-
-    override func didMove(to view: SKView) {
+    
+    override init() {
+        super.init(size: .zero)
         self.backgroundColor = .clear
         // to allow sub-elements to be transparent (i think):
 //        view.backgroundColor = .clear
 //        view.allowsTransparency = true
         plantNode = SKSpriteNode(imageNamed: "plant")
         plantNode.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        plantNode.setScale(0.20) // Optional: adjust size
-
         addChild(plantNode)
+        setPlantHealth(0)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setPlantHealth(_ health: CGFloat) {
+        plantNode.yScale = health
     }
 }
 
+func makePlantScene() -> PlantGrow {
+    let scene = PlantGrow()
+    scene.size = CGSize(width: 300, height: 300)
+    scene.scaleMode = .fill
+    scene.setScale(0.20)
+    return scene
+}
+
+let plantScene = makePlantScene()
+
 struct HomeView: View {
-    
-    var plant: SKScene {
-        let scene = PlantGrow()
-        scene.size = CGSize(width: 300, height: 300)
-        scene.scaleMode = .fill
-        return scene
-    }
     @EnvironmentObject var hydrationData: HydrationData
     
     var body: some View {
@@ -41,8 +52,14 @@ struct HomeView: View {
                 .font(.largeTitle)
                 .fontWeight(.bold)
             
-            SpriteView(scene: plant, options: [.allowsTransparency])
+            SpriteView(scene: plantScene, options: [.allowsTransparency])
                 .frame(width: 300, height: 300)
+                .onChange(of: hydrationData.waterIntake) {
+                    plantScene.setPlantHealth(hydrationData.waterIntake / hydrationData.dailyGoal)
+                }
+            
+            
+
             // good for debugging/tuning layout:
 //                .border(Color.black, width: 1)
             
