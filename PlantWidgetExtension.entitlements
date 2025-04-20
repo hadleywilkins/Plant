@@ -4,7 +4,7 @@
 <dict>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.reddingsauter.Plant</string>
+		<string>group.com.resariha.plantwidget</string>
 	</array>
 </dict>
 </plist>

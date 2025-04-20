@@ -6,15 +6,16 @@
 //
 
 import SwiftUI
+import WidgetKit
 
 class HydrationData: ObservableObject {
+    
+    let widgetData = UserDefaults(suiteName: "group.com.resariha.plantwidget")
     
     @AppStorage("waterIntake") var waterIntake: Double = 0 //Store in mL
     @AppStorage("dailyGoal") var dailyGoal: Double = 2000  // daily goal (in mL)
     @AppStorage("unit") var unit: Unit = .ounces  // Default unit
     @AppStorage("glassSize") var glassSize: Double = 250 // Default glass size in mL
-    
-    // hd.unit.format(amountInMilliliters: hd.dailyGoal)
     
     enum Unit: String {
         case ounces = "oz"
@@ -53,13 +54,13 @@ class HydrationData: ObservableObject {
     func logGlassOfWater() {
         if waterIntake < dailyGoal {
             waterIntake += glassSize
-            
-//            defaults.set(waterIntake, forKey: "intake")
         }
+        syncToWidget()
     }
     
     func updateDailyGoal(newGoal: Double) {
         dailyGoal = newGoal
+        syncToWidget()
     }
     
     func switchUnit(to newUnit: Unit) {
@@ -80,6 +81,12 @@ class HydrationData: ObservableObject {
 
     func resetDailyIntake() {
         waterIntake = 0
+    }
+    
+    func syncToWidget() {
+        widgetData?.set(waterIntake, forKey: "waterIntake")
+        widgetData?.set(dailyGoal, forKey: "dailyGoal")
+        WidgetCenter.shared.reloadAllTimelines()
     }
     
 }
