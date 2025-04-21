@@ -13,22 +13,34 @@ class PlantGrow: SKScene {
     
     override init() {
         super.init(size: .zero)
-        self.backgroundColor = .clear
-        // to allow sub-elements to be transparent (i think):
-//        view.backgroundColor = .clear
-//        view.allowsTransparency = true
-        plantNode = SKSpriteNode(imageNamed: "plant")
-        plantNode.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        addChild(plantNode)
-        setPlantHealth(0)
+//        self.backgroundColor = .clear
+//        // to allow sub-elements to be transparent (i think):
+////        view.backgroundColor = .clear
+////        view.allowsTransparency = true
+//        plantNode = SKSpriteNode(imageNamed: "plant")
+//        plantNode.size = CGSize(width: 200, height: 200)
+//        plantNode.position = CGPoint(x: size.width / 2, y: size.height / 2)
+//        addChild(plantNode)
+//        setPlantHealth(0)
     }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+    override func didMove(to view: SKView) {
+            self.backgroundColor = .clear
+            plantNode = SKSpriteNode(imageNamed: "plant")
+            plantNode.size = CGSize(width: 200, height: 200)
+            plantNode.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2)
+            addChild(plantNode)
+            setPlantHealth(0.1)
+        }
     func setPlantHealth(_ health: CGFloat) {
-        plantNode.yScale = health
+        let newScale = max(0.1, health)
+                let scaleX = SKAction.scaleX(to: newScale, duration: 0.5)
+                let scaleY = SKAction.scaleY(to: newScale, duration: 0.5)
+                let group = SKAction.group([scaleX, scaleY])
+                group.timingMode = .easeInEaseOut
+                plantNode.run(group)
     }
 }
 
