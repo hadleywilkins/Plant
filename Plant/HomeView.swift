@@ -26,6 +26,7 @@ class PlantGrow: SKScene {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    // automatically called when the scene is fully presented by its SKView
     override func didMove(to view: SKView) {
             self.backgroundColor = .clear
             plantNode = SKSpriteNode(imageNamed: "plant")
