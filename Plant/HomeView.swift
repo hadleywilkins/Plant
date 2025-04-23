@@ -10,6 +10,7 @@ import SpriteKit
 
 class PlantGrow: SKScene {
     private var plantNode: SKSpriteNode!
+    private var potNode: SKSpriteNode!
     
     override init() {
         super.init(size: .zero)
@@ -26,22 +27,31 @@ class PlantGrow: SKScene {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     // automatically called when the scene is fully presented by its SKView
     override func didMove(to view: SKView) {
             self.backgroundColor = .clear
-            plantNode = SKSpriteNode(imageNamed: "plant")
-            plantNode.size = CGSize(width: 200, height: 200)
-            plantNode.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2)
+            // Static pot
+            potNode = SKSpriteNode(imageNamed: "pot")
+            plantNode.anchorPoint = CGPoint(x: 0.5, y: 1.0)
+            potNode.size = CGSize(width: 180, height: 180)
+            potNode.position = CGPoint(x: size.width / 2, y: size.width / 2)
+            addChild(potNode)
+        
+            plantNode = SKSpriteNode(imageNamed: "leaf_1")
+            plantNode.size = CGSize(width: 150, height: 150)
+            plantNode.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2 + 10 )
             addChild(plantNode)
-            setPlantHealth(0.1)
+            //setPlantHealth(0.1)
         }
+    
     func setPlantHealth(_ health: CGFloat) {
         let newScale = max(0.1, health)
-                let scaleX = SKAction.scaleX(to: newScale, duration: 0.5)
-                let scaleY = SKAction.scaleY(to: newScale, duration: 0.5)
-                let group = SKAction.group([scaleX, scaleY])
-                group.timingMode = .easeInEaseOut
-                plantNode.run(group)
+        let scaleX = SKAction.scaleX(to: newScale, duration: 0.5)
+        let scaleY = SKAction.scaleY(to: newScale, duration: 0.5)
+        let group = SKAction.group([scaleX, scaleY])
+        group.timingMode = .easeInEaseOut
+        plantNode.run(group)
     }
 }
 
