@@ -9,7 +9,7 @@ import SwiftUI
 import SpriteKit
 
 class PlantGrow: SKScene {
-    private var plantNode: SKSpriteNode!
+    private var leafNodes: [SKSpriteNode] = []
     private var potNode: SKSpriteNode!
     
     override init() {
@@ -33,25 +33,32 @@ class PlantGrow: SKScene {
             self.backgroundColor = .clear
             // Static pot
             potNode = SKSpriteNode(imageNamed: "pot")
-            plantNode.anchorPoint = CGPoint(x: 0.5, y: 1.0)
             potNode.size = CGSize(width: 180, height: 180)
             potNode.position = CGPoint(x: size.width / 2, y: size.width / 2)
             addChild(potNode)
         
-            plantNode = SKSpriteNode(imageNamed: "leaf_1")
-            plantNode.size = CGSize(width: 150, height: 150)
-            plantNode.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2 + 10 )
-            addChild(plantNode)
-            //setPlantHealth(0.1)
+            for leafNum in 1...10 {
+                let leafNode = SKSpriteNode(imageNamed: "leaf_\(leafNum)")
+                leafNode.size = CGSize(width: 150, height: 150)
+                leafNode.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2 + 10 )
+                addChild(leafNode)
+                leafNodes.append(leafNode)
+            }
         }
     
     func setPlantHealth(_ health: CGFloat) {
-        let newScale = max(0.1, health)
-        let scaleX = SKAction.scaleX(to: newScale, duration: 0.5)
-        let scaleY = SKAction.scaleY(to: newScale, duration: 0.5)
-        let group = SKAction.group([scaleX, scaleY])
-        group.timingMode = .easeInEaseOut
-        plantNode.run(group)
+        for (index, leafNode) in leafNodes.enumerated() {
+            let newScale = max(
+                0.1,
+                pow(
+                    health,
+                    0.2 + 1.7 * Double(index) / Double(leafNodes.count)
+                )
+            )
+            let scale = SKAction.scale(to: newScale, duration: 0.5)
+            scale.timingMode = .easeInEaseOut
+            leafNode.run(scale)
+        }
     }
 }
 
