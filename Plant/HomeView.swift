@@ -14,15 +14,6 @@ class PlantGrow: SKScene {
     
     override init() {
         super.init(size: .zero)
-//        self.backgroundColor = .clear
-//        // to allow sub-elements to be transparent (i think):
-////        view.backgroundColor = .clear
-////        view.allowsTransparency = true
-//        plantNode = SKSpriteNode(imageNamed: "plant")
-//        plantNode.size = CGSize(width: 200, height: 200)
-//        plantNode.position = CGPoint(x: size.width / 2, y: size.height / 2)
-//        addChild(plantNode)
-//        setPlantHealth(0)
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -59,6 +50,31 @@ class PlantGrow: SKScene {
             scale.timingMode = .easeInEaseOut
             leafNode.run(scale)
         }
+        
+        
+        }
+    
+    func startSwayingLeaves() {
+        for leafNode in leafNodes {
+            
+            //trying rotation here:
+//            let swayLeft = SKAction.rotate(toAngle: 0.1, duration: 0.2)
+//            let swayRight = SKAction.rotate(toAngle: -0.1, duration: 0.2)
+//            swayLeft.timingMode = .easeInEaseOut
+//            swayRight.timingMode = .easeInEaseOut
+//            let swaySequence = SKAction.sequence([swayLeft, swayRight])
+//            let swayForever = SKAction.repeatForever(swaySequence)
+//            leafNode.run(swayForever, withKey: "sway")
+            
+            //Trying movement here
+            let moveRight = SKAction.moveBy(x:1, y: 0, duration: 2)
+            moveRight.timingMode = .easeInEaseOut
+            let moveLeft = SKAction.moveBy(x: -1, y: 0, duration: 2)
+            moveLeft.timingMode = .easeInEaseOut
+            let moveBackAndForth = SKAction.repeatForever(SKAction.sequence([moveRight, moveLeft]))
+                    leafNode.run(moveBackAndForth)
+            
+        }
     }
 }
 
@@ -86,6 +102,8 @@ struct HomeView: View {
                 .frame(width: 300, height: 300)
                 .onChange(of: hydrationData.waterIntake) {
                     plantScene.setPlantHealth(hydrationData.waterIntake / hydrationData.dailyGoal)
+                    plantScene.startSwayingLeaves()
+                    
                 }
             
             
