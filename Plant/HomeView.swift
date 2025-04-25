@@ -118,7 +118,11 @@ struct HomeView: View {
                     .progressViewStyle(LinearProgressViewStyle(tint: .blue))
                     .frame(width: 200)
             
-            Text("\(hydrationData.unit.format(amountInMilliliters: hydrationData.waterIntake)) / \(hydrationData.unit.format(amountInMilliliters: hydrationData.dailyGoal))")
+            //Text("\(hydrationData.unit.format(amountInMilliliters: hydrationData.waterIntake)) / \(hydrationData.unit.format(amountInMilliliters: hydrationData.dailyGoal))")
+                .font(.subheadline)
+                .foregroundColor(.gray)
+            
+            Text("\(hydrationData.unit.format(amountInMilliliters: hydrationData.waterIntake)) / \(hydrationData.unit.roundForDisplay(amountInMilliliters: hydrationData.dailyGoal, ounceRound: 8, literRound: 0.25)))")
                 .font(.subheadline)
                 .foregroundColor(.gray)
 
