@@ -21,21 +21,25 @@ class PlantGrow: SKScene {
     
     // automatically called when the scene is fully presented by its SKView
     override func didMove(to view: SKView) {
-            self.backgroundColor = .clear
-            // Static pot
-            potNode = SKSpriteNode(imageNamed: "pot")
-            potNode.size = CGSize(width: 180, height: 180)
-            potNode.position = CGPoint(x: size.width / 2, y: size.width / 2)
-            addChild(potNode)
+        self.backgroundColor = .clear
+        // Static pot
+        potNode = SKSpriteNode(imageNamed: "pot")
+        potNode.size = CGSize(width: 180, height: 180)
+        potNode.position = CGPoint(x: size.width / 2, y: size.width / 2)
+        addChild(potNode)
         
-            for leafNum in 1...10 {
-                let leafNode = SKSpriteNode(imageNamed: "leaf_\(leafNum)")
-                leafNode.size = CGSize(width: 150, height: 150)
-                leafNode.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2 + 10 )
-                addChild(leafNode)
-                leafNodes.append(leafNode)
-            }
+        let anchorJSON = NSDataAsset(name: "leaf_anchors")!
+        let anchors = try! JSONDecoder().decode([CGPoint].self, from: anchorJSON.data)
+        
+        for (leafNum, anchor) in anchors.enumerated() {
+            let leafNode = SKSpriteNode(imageNamed: "leaf_\(leafNum)")
+            leafNode.size = CGSize(width: 150, height: 150)
+            leafNode.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2 + 10 )
+            leafNode.anchorPoint = anchor
+            addChild(leafNode)
+            leafNodes.append(leafNode)
         }
+    }
     
     func setPlantHealth(_ health: CGFloat) {
         for (index, leafNode) in leafNodes.enumerated() {
@@ -57,14 +61,14 @@ class PlantGrow: SKScene {
     func startSwayingLeaves() {
         for leafNode in leafNodes {
             
-            //trying rotation here:
-//            let swayLeft = SKAction.rotate(toAngle: 0.1, duration: 0.2)
-//            let swayRight = SKAction.rotate(toAngle: -0.1, duration: 0.2)
-//            swayLeft.timingMode = .easeInEaseOut
-//            swayRight.timingMode = .easeInEaseOut
-//            let swaySequence = SKAction.sequence([swayLeft, swayRight])
-//            let swayForever = SKAction.repeatForever(swaySequence)
-//            leafNode.run(swayForever, withKey: "sway")
+//            trying rotation here:
+//            let rotateLeft = SKAction.rotate(toAngle: 0.1, duration: 0.2)
+//            let rotateRight = SKAction.rotate(toAngle: -0.1, duration: 0.2)
+//            rotateLeft.timingMode = .easeInEaseOut
+//            rotateRight.timingMode = .easeInEaseOut
+//            let group = SKAction.sequence([rotateLeft, rotateRight])
+//            let sway = SKAction.repeatForever(group)
+//            leafNode.run(sway)
             
             //Trying movement here
             let moveRight = SKAction.moveBy(x:1, y: 0, duration: 2)
