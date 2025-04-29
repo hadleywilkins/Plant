@@ -34,8 +34,12 @@ class PlantGrow: SKScene {
         for (leafNum, anchor) in anchors.enumerated() {
             let leafNode = SKSpriteNode(imageNamed: "leaf_\(leafNum)")
             leafNode.size = CGSize(width: 150, height: 150)
-            leafNode.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2 + 10 )
+            leafNode.position = CGPoint(
+                x: self.size.width * 0.5 + leafNode.size.width * (anchor.x - 0.5),
+                y: self.size.height * 0.5 + leafNode.size.height * (anchor.y - 0.5)
+            )
             leafNode.anchorPoint = anchor
+//            leafNode.anchorPoint = CGPoint(x: 1, y: 1)
             addChild(leafNode)
             leafNodes.append(leafNode)
         }
@@ -50,13 +54,12 @@ class PlantGrow: SKScene {
                     0.2 + 1.7 * Double(index) / Double(leafNodes.count)
                 )
             )
+
             let scale = SKAction.scale(to: newScale, duration: 0.5)
             scale.timingMode = .easeInEaseOut
             leafNode.run(scale)
         }
-        
-        
-        }
+    }
     
     func startSwayingLeaves() {
         for leafNode in leafNodes {
@@ -71,12 +74,12 @@ class PlantGrow: SKScene {
 //            leafNode.run(sway)
             
             //Trying movement here
-            let moveRight = SKAction.moveBy(x:1, y: 0, duration: 2)
-            moveRight.timingMode = .easeInEaseOut
-            let moveLeft = SKAction.moveBy(x: -1, y: 0, duration: 2)
-            moveLeft.timingMode = .easeInEaseOut
-            let moveBackAndForth = SKAction.repeatForever(SKAction.sequence([moveRight, moveLeft]))
-                    leafNode.run(moveBackAndForth)
+//            let moveRight = SKAction.moveBy(x:1, y: 0, duration: 2)
+//            moveRight.timingMode = .easeInEaseOut
+//            let moveLeft = SKAction.moveBy(x: -1, y: 0, duration: 2)
+//            moveLeft.timingMode = .easeInEaseOut
+//            let moveBackAndForth = SKAction.repeatForever(SKAction.sequence([moveRight, moveLeft]))
+//                    leafNode.run(moveBackAndForth)
             
         }
     }
@@ -109,10 +112,7 @@ struct HomeView: View {
                     plantScene.startSwayingLeaves()
                     
                 }
-            
-            
-
-            // good for debugging/tuning layout:
+            //good for debugging/tuning layout:
 //                .border(Color.black, width: 1)
             
             Text("Have you had water today?")
