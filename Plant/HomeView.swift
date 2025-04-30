@@ -62,7 +62,7 @@ class PlantGrow: SKScene {
     }
     
     func startSwayingLeaves() {
-        for leafNode in leafNodes {
+        //for leafNode in leafNodes {
             
 //            trying rotation here:
 //            let rotateLeft = SKAction.rotate(toAngle: 0.1, duration: 0.2)
@@ -82,8 +82,8 @@ class PlantGrow: SKScene {
 //                    leafNode.run(moveBackAndForth)
             
         }
-    }
 }
+
 
 func makePlantScene() -> PlantGrow {
     let scene = PlantGrow()
