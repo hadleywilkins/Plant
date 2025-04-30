@@ -39,22 +39,21 @@ class PlantGrow: SKScene {
                 y: self.size.height * 0.5 + leafNode.size.height * (anchor.y - 0.5)
             )
             leafNode.anchorPoint = anchor
-//            leafNode.anchorPoint = CGPoint(x: 1, y: 1)
+            //            leafNode.anchorPoint = CGPoint(x: 1, y: 1)
             addChild(leafNode)
             leafNodes.append(leafNode)
         }
     }
     
     func setPlantHealth(_ health: CGFloat) {
-        for (index, leafNode) in leafNodes.enumerated() {
-            let newScale = max(
-                0.1,
-                pow(
-                    health,
-                    0.2 + 1.7 * Double(index) / Double(leafNodes.count)
-                )
-            )
-
+        let leafGrowthTime = 0.5
+        let maxLeafStartTime = 1 - leafGrowthTime
+        for (leafNum, leafNode) in leafNodes.enumerated() {
+            let leafStartTime = maxLeafStartTime * CGFloat(leafNum) / CGFloat(leafNodes.count - 1)
+            let growthTimeElapsed = health - leafStartTime
+            let growthLine = growthTimeElapsed / leafGrowthTime
+            let newScale = min(1, max(0, growthLine)) //pinning growthline between 0 and 1
+            
             let scale = SKAction.scale(to: newScale, duration: 0.5)
             scale.timingMode = .easeInEaseOut
             leafNode.run(scale)
@@ -62,28 +61,28 @@ class PlantGrow: SKScene {
     }
     
     func startSwayingLeaves() {
-        //for leafNode in leafNodes {
-            
-//            trying rotation here:
-//            let rotateLeft = SKAction.rotate(toAngle: 0.1, duration: 0.2)
-//            let rotateRight = SKAction.rotate(toAngle: -0.1, duration: 0.2)
+//        for leafNode in leafNodes {
+//            
+//            //            trying rotation here:
+//            let rotateLeft = SKAction.rotate(toAngle: 0.08, duration: 0.1)
+//            let rotateRight = SKAction.rotate(toAngle: -0.08, duration: 0.1)
 //            rotateLeft.timingMode = .easeInEaseOut
 //            rotateRight.timingMode = .easeInEaseOut
 //            let group = SKAction.sequence([rotateLeft, rotateRight])
 //            let sway = SKAction.repeatForever(group)
 //            leafNode.run(sway)
-            
-            //Trying movement here
+//            
+//            //Trying movement here
 //            let moveRight = SKAction.moveBy(x:1, y: 0, duration: 2)
 //            moveRight.timingMode = .easeInEaseOut
 //            let moveLeft = SKAction.moveBy(x: -1, y: 0, duration: 2)
 //            moveLeft.timingMode = .easeInEaseOut
 //            let moveBackAndForth = SKAction.repeatForever(SKAction.sequence([moveRight, moveLeft]))
 //                    leafNode.run(moveBackAndForth)
-            
-        }
+//            
+//        }
+    }
 }
-
 
 func makePlantScene() -> PlantGrow {
     let scene = PlantGrow()
