@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SpriteKit
+import Oklch
 
 class PlantGrow: SKScene {
     private var leafNodes: [SKSpriteNode] = []
@@ -86,9 +87,9 @@ class PlantGrow: SKScene {
 
 func makePlantScene() -> PlantGrow {
     let scene = PlantGrow()
-    scene.size = CGSize(width: 300, height: 300)
+    scene.size = CGSize(width: 180, height: 180)
     scene.scaleMode = .fill
-    scene.setScale(0.20)
+    scene.setScale(1)
     return scene
 }
 
@@ -98,63 +99,71 @@ struct HomeView: View {
     @EnvironmentObject var hydrationData: HydrationData
     
     var body: some View {
-        
-        VStack(spacing: 20) {
-            Text("Home")
-                .font(.largeTitle)
-                .fontWeight(.bold)
+        ZStack {
+            LinearGradient(gradient: Gradient(
+                            colors: [PlantApp.colors.tan, PlantApp.colors.brown]),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing)
+                .ignoresSafeArea()
+//            background color/gradient
             
-            SpriteView(scene: plantScene, options: [.allowsTransparency])
-                .frame(width: 300, height: 300)
-                .onChange(of: hydrationData.waterIntake) {
-                    plantScene.setPlantHealth(hydrationData.waterIntake / hydrationData.dailyGoal)
-                    plantScene.startSwayingLeaves()
+            VStack(spacing: 20) {
+                
+                SpriteView(scene: plantScene, options: [.allowsTransparency])
+                    .frame(width: 400, height: 400)
+                    .onChange(of: hydrationData.waterIntake) {
+                        plantScene.setPlantHealth(hydrationData.waterIntake / hydrationData.dailyGoal)
+                        plantScene.startSwayingLeaves()
+                        
+                    }
+                //good for debugging/tuning layout:
+//                    .border(Color.black, width: 1)
+                
+                Text("Have you had water today?")
+                    .font(.title2)
+                    .foregroundColor(PlantApp.colors.darkbrown)
+                
+                ProgressView(value: Double(hydrationData.waterIntake), total: Double(hydrationData.dailyGoal))
+                    .progressViewStyle(LinearProgressViewStyle()) // #C2687F
+                        .frame(width: 200)
+                
+                //Text("\(hydrationData.unit.format(amountInMilliliters: hydrationData.waterIntake)) / \(hydrationData.unit.format(amountInMilliliters: hydrationData.dailyGoal))")
+                    .font(.headline)
+                    .foregroundColor(.green)
+                
+                Text("\(hydrationData.unit.format(amountInMilliliters: hydrationData.waterIntake)) / \(hydrationData.unit.roundForDisplay(amountInMilliliters: hydrationData.dailyGoal, ounceRound: 8, literRound: 0.25))")
+                    .font(.headline)
+                    .foregroundColor(PlantApp.colors.darkbrown)
+                
+                HStack {
+                    Button(action: {
+                        hydrationData.logGlassOfWater()
+                    }) {
+                        Text("Log a Glass of Water")
+                            .padding()
+                            .frame(width: 150, height: 75)
+                            .background(PlantApp.colors.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                    }
+                    .padding(.top, 10)
                     
+                    Button(action: {
+                        hydrationData.resetDailyIntake()
+                    }) {
+                        Text("Reset")
+                            .padding()
+                            .frame(width: 150, height: 75)
+                            .background(PlantApp.colors.red)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                    }
+                    .padding(.top, 10)
                 }
-            //good for debugging/tuning layout:
-//                .border(Color.black, width: 1)
-            
-            Text("Have you had water today?")
-                .font(.subheadline)
-            
-            ProgressView(value: Double(hydrationData.waterIntake), total: Double(hydrationData.dailyGoal))
-                    .progressViewStyle(LinearProgressViewStyle(tint: .blue))
-                    .frame(width: 200)
-            
-            //Text("\(hydrationData.unit.format(amountInMilliliters: hydrationData.waterIntake)) / \(hydrationData.unit.format(amountInMilliliters: hydrationData.dailyGoal))")
-                .font(.subheadline)
-                .foregroundColor(.gray)
-            
-            Text("\(hydrationData.unit.format(amountInMilliliters: hydrationData.waterIntake)) / \(hydrationData.unit.roundForDisplay(amountInMilliliters: hydrationData.dailyGoal, ounceRound: 8, literRound: 0.25)))")
-                .font(.subheadline)
-                .foregroundColor(.gray)
 
-            Button(action: {
-                hydrationData.logGlassOfWater()
-            }) {
-                Text("Log a Glass of Water")
-                    .padding()
-                    .frame(width: 150)
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
             }
-            .padding(.top, 10)
+            .padding()
             
-            Button(action: {
-                hydrationData.resetDailyIntake()
-            }) {
-                Text("Reset")
-                    .padding()
-                    .frame(width: 150)
-                    .background(Color.red)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-            }
-            .padding(.top, 10)
-
-            Spacer()
         }
-        .padding()
     }
 }

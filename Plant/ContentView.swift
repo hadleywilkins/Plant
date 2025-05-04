@@ -10,6 +10,7 @@ import SwiftData
 
 struct ContentView: View {
     @StateObject var hydrationData = HydrationData()
+    
     private var container: ModelContainer
     
     init() {
@@ -41,6 +42,7 @@ struct ContentView: View {
                     Label("Settings", systemImage: "gear")
                 }
         }
+        .accentColor(PlantApp.colors.blue)
     }
 }
 

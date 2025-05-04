@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		071856F42DC807550091FA42 /* Oklch in Frameworks */ = {isa = PBXBuildFile; productRef = 071856F32DC807550091FA42 /* Oklch */; };
+		071856F62DC8076D0091FA42 /* Oklch in Frameworks */ = {isa = PBXBuildFile; productRef = 071856F52DC8076D0091FA42 /* Oklch */; };
 		AC1B224E2D936CF90035F7BC /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07D52F952D8470A5001CF3FF /* WidgetKit.framework */; };
 		AC1B224F2D936CF90035F7BC /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07D52F972D8470A5001CF3FF /* SwiftUI.framework */; };
 		AC1B22602D936CFB0035F7BC /* PlantWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = AC1B224D2D936CF90035F7BC /* PlantWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -101,6 +103,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				071856F42DC807550091FA42 /* Oklch in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -122,6 +125,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				071856F62DC8076D0091FA42 /* Oklch in Frameworks */,
 				AC1B224F2D936CF90035F7BC /* SwiftUI.framework in Frameworks */,
 				AC1B224E2D936CF90035F7BC /* WidgetKit.framework in Frameworks */,
 			);
@@ -185,6 +189,7 @@
 			);
 			name = Plant;
 			packageProductDependencies = (
+				071856F32DC807550091FA42 /* Oklch */,
 			);
 			productName = Plant;
 			productReference = 0774373D2D78DDC300D62117 /* Plant.app */;
@@ -253,6 +258,7 @@
 			);
 			name = PlantWidgetExtension;
 			packageProductDependencies = (
+				071856F52DC8076D0091FA42 /* Oklch */,
 			);
 			productName = PlantWidgetExtension;
 			productReference = AC1B224D2D936CF90035F7BC /* PlantWidgetExtension.appex */;
@@ -293,6 +299,9 @@
 			);
 			mainGroup = 077437342D78DDC300D62117;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				071856F22DC807550091FA42 /* XCLocalSwiftPackageReference "Oklch" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 0774373E2D78DDC300D62117 /* Products */;
 			projectDirPath = "";
@@ -739,6 +748,24 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		071856F22DC807550091FA42 /* XCLocalSwiftPackageReference "Oklch" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Oklch;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		071856F32DC807550091FA42 /* Oklch */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Oklch;
+		};
+		071856F52DC8076D0091FA42 /* Oklch */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Oklch;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 077437352D78DDC300D62117 /* Project object */;
 }

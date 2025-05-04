@@ -24,7 +24,7 @@ struct StatsView: View {
                 .fontWeight(.bold)
 
         ProgressView(value: Double(hydrationData.waterIntake), total: Double(hydrationData.dailyGoal))
-                .progressViewStyle(LinearProgressViewStyle(tint: .blue))
+                .progressViewStyle(LinearProgressViewStyle())
                 .frame(width: 250)
 
             Text("\(hydrationData.getTotalIntakeFormatted()) / \(hydrationData.getDailyGoalFormatted())")
