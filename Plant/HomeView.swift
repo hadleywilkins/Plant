@@ -96,7 +96,7 @@ func makePlantScene() -> PlantGrow {
 let plantScene = makePlantScene()
 
 struct HomeView: View {
-    @EnvironmentObject var hydrationData: HydrationData
+    @EnvironmentObject var hd: HydrationData
     
     var body: some View {
         ZStack {
@@ -111,8 +111,8 @@ struct HomeView: View {
                 
                 SpriteView(scene: plantScene, options: [.allowsTransparency])
                     .frame(width: 400, height: 400)
-                    .onChange(of: hydrationData.waterIntake) {
-                        plantScene.setPlantHealth(hydrationData.waterIntake / hydrationData.dailyGoal)
+                    .onChange(of: hd.waterIntake) {
+                        plantScene.setPlantHealth(hd.waterIntake / hd.dailyGoal)
                         plantScene.startSwayingLeaves()
                         
                     }
@@ -123,21 +123,22 @@ struct HomeView: View {
                     .font(.title2)
                     .foregroundColor(PlantApp.colors.darkbrown)
                 
-                ProgressView(value: Double(hydrationData.waterIntake), total: Double(hydrationData.dailyGoal))
+                ProgressView(value: Double(hd.waterIntake), total: Double(hd.dailyGoal))
                     .progressViewStyle(LinearProgressViewStyle()) // #C2687F
                         .frame(width: 200)
                 
                 //Text("\(hydrationData.unit.format(amountInMilliliters: hydrationData.waterIntake)) / \(hydrationData.unit.format(amountInMilliliters: hydrationData.dailyGoal))")
                     .font(.headline)
                     .foregroundColor(.green)
-                
-                Text("\(hydrationData.unit.format(amountInMilliliters: hydrationData.waterIntake)) / \(hydrationData.unit.roundForDisplay(amountInMilliliters: hydrationData.dailyGoal, ounceRound: 8, literRound: 0.25))")
+                let intake = hd.unit.format(amountInMilliliters: hd.waterIntake)
+                let goal = hd.unit.roundForDisplay(amountInMilliliters: hd.dailyGoal, ounceRound: 8, literRound: 0.25)
+                Text("\(intake) / \(goal)")
                     .font(.headline)
                     .foregroundColor(PlantApp.colors.darkbrown)
                 
                 HStack {
                     Button(action: {
-                        hydrationData.logGlassOfWater()
+                        hd.logGlassOfWater()
                     }) {
                         Text("Log a Glass of Water")
                             .padding()
@@ -149,7 +150,7 @@ struct HomeView: View {
                     .padding(.top, 10)
                     
                     Button(action: {
-                        hydrationData.resetDailyIntake()
+                        hd.resetDailyIntake()
                     }) {
                         Text("Reset")
                             .padding()

@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @StateObject var hydrationData = HydrationData()
+    @StateObject var hd = HydrationData()
     
     private var container: ModelContainer
     
@@ -24,20 +24,20 @@ struct ContentView: View {
     var body: some View {
         TabView {
             HomeView()
-                .environmentObject(hydrationData)
+                .environmentObject(hd)
                 .tabItem {
                     Label("Home", systemImage: "house")
                 }
             
             StatsView()
-                .environmentObject(hydrationData)
+                .environmentObject(hd)
                 .tabItem {
                     Label("Stats", systemImage: "chart.line.uptrend.xyaxis")
                 }
                 .modelContainer(container)
 
             SettingsView()
-                .environmentObject(hydrationData)
+                .environmentObject(hd)
                 .tabItem {
                     Label("Settings", systemImage: "gear")
                 }

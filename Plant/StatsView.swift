@@ -10,7 +10,7 @@ import SwiftData
 import Charts
 
 struct StatsView: View {
-    @EnvironmentObject var hydrationData: HydrationData
+    @EnvironmentObject var hd: HydrationData
     @Environment(\.modelContext) private var context
     @AppStorage("lastLoggedDate") var lastLoggedDate: String = ""
     let currentDate = Date()
@@ -23,14 +23,46 @@ struct StatsView: View {
                 .font(.largeTitle)
                 .fontWeight(.bold)
 
-        ProgressView(value: Double(hydrationData.waterIntake), total: Double(hydrationData.dailyGoal))
+            ProgressView(value: Double(hd.waterIntake), total: Double(hd.dailyGoal))
                 .progressViewStyle(LinearProgressViewStyle())
                 .frame(width: 250)
 
-            Text("\(hydrationData.getTotalIntakeFormatted()) / \(hydrationData.getDailyGoalFormatted())")
+            Text("\(hd.getTotalIntakeFormatted()) / \(hd.getDailyGoalFormatted())")
                             .font(.subheadline)
                             .foregroundColor(.gray)
             
+            Chart {
+                ForEach(days) { day in
+                    let intake = hd.unit.value(amountInMilliliters: day.intake)
+                    BarMark(
+                        x: .value("Date", formattedDate(day.date)),
+                        y: .value("Intake", intake)
+                    )
+                }
+                // sets the vertical line to _today's_ goal
+                let goal = hd.unit.value(amountInMilliliters: hd.dailyGoal)
+                RuleMark(y: .value("Goal", goal))
+                    .foregroundStyle(PlantApp.colors.red)
+            }
+            
+            // Storing as raw type in water day which is good for graph, but need formated type for this part of display
+            List {
+                ForEach(days) { day in
+                    let intake = hd.unit.format(amountInMilliliters: day.intake)
+                    let goal = hd.unit.format(amountInMilliliters: day.goal)
+                    Text("\(formattedDate(day.date)): \(intake)/\(goal)")
+                }
+                .onDelete { indices in
+                    for index in indices {
+                        deleteDay(day: days[index])
+                    }
+            }
+            }
+            // only checks when stat view is opened, refactor to on home view opened
+            .onAppear {
+                 checkAndResetIfNewDay()
+                
+            }
             Button(action: {
                 addDay()
             }) {
@@ -41,51 +73,25 @@ struct StatsView: View {
                     .foregroundColor(.white)
                     .cornerRadius(10)
             }
-            
-            Chart {
-                ForEach(days) { day in
-                    BarMark(
-                        x: .value("Date", formattedDate(day.date)),
-                        y: .value("Intake", hydrationData.unit.value(amountInMilliliters: day.intake))
-                    )
-                }
-            }
-            
-            //Storing as raw type in water day which is good for graph, but need formated type for this part of display
-            List {
-                ForEach(days) { day in
-                    Text("\(formattedDate(day.date)): \(hydrationData.unit.format(amountInMilliliters: day.intake))/\(hydrationData.unit.format(amountInMilliliters: day.goal))")
-                }
-                .onDelete { indices in
-                    for index in indices {
-                        deleteDay(day: days[index])
-                    }
-            }
-            }
-            //only checks when stat view is opened, refactor to on home view opened
-            .onAppear {
-                 checkAndResetIfNewDay()
-            }
-
         }
     }
     
     func checkAndResetIfNewDay() {
         let today = formattedDate(currentDate)
         if today != lastLoggedDate {
-            if hydrationData.waterIntake > 0 { // Save previous day if intake exists
+            if hd.waterIntake > 0 { // Save previous day if intake exists
                 addDay()
             }
-            hydrationData.resetDailyIntake()
+            hd.resetDailyIntake()
             lastLoggedDate = today
         }
     }
     
-    //adds current date rather than previous, refactor to store yesterday
+    // adds current date rather than previous, refactor to store yesterday
     func addDay() {
-        let newDay = WaterDay(date: currentDate, goal:hydrationData.dailyGoal, intake:hydrationData.waterIntake)
+        let newDay = WaterDay(date: currentDate, goal:hd.dailyGoal, intake:hd.waterIntake)
         context.insert(newDay)
-        hydrationData.resetDailyIntake()
+        hd.resetDailyIntake()
     }
     
     func deleteDay(day: WaterDay) {
