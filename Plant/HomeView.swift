@@ -120,20 +120,20 @@ struct HomeView: View {
 //                    .border(Color.black, width: 1)
                 
                 Text("Have you had water today?")
-                    .font(.title2)
+                    .font(.system(.title, design: .serif))
+                    .fontWidth(.compressed)
+                    .fontWeight(.bold)
                     .foregroundColor(PlantApp.colors.darkbrown)
                 
                 ProgressView(value: Double(hd.waterIntake), total: Double(hd.dailyGoal))
-                    .progressViewStyle(LinearProgressViewStyle()) // #C2687F
-                        .frame(width: 200)
+                    .frame(width: 200)
+                    .scaleEffect(x: 1, y: 3, anchor: .center)
                 
                 //Text("\(hydrationData.unit.format(amountInMilliliters: hydrationData.waterIntake)) / \(hydrationData.unit.format(amountInMilliliters: hydrationData.dailyGoal))")
-                    .font(.headline)
-                    .foregroundColor(.green)
                 let intake = hd.unit.format(amountInMilliliters: hd.waterIntake)
                 let goal = hd.unit.roundForDisplay(amountInMilliliters: hd.dailyGoal, ounceRound: 8, literRound: 0.25)
                 Text("\(intake) / \(goal)")
-                    .font(.headline)
+                    .font(.system(.headline, design:.default))
                     .foregroundColor(PlantApp.colors.darkbrown)
                 
                 HStack {
@@ -146,6 +146,7 @@ struct HomeView: View {
                             .background(PlantApp.colors.blue)
                             .foregroundColor(.white)
                             .cornerRadius(10)
+                            .fontDesign(.default)
                     }
                     .padding(.top, 10)
                     
@@ -158,6 +159,7 @@ struct HomeView: View {
                             .background(PlantApp.colors.red)
                             .foregroundColor(.white)
                             .cornerRadius(10)
+                            .fontDesign(.default)
                     }
                     .padding(.top, 10)
                 }
