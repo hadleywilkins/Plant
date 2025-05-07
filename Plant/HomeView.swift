@@ -97,6 +97,7 @@ let plantScene = makePlantScene()
 
 struct HomeView: View {
     @EnvironmentObject var hd: HydrationData
+    @State var isPresentingConf: Bool = false
     
     var body: some View {
         ZStack {
@@ -151,7 +152,7 @@ struct HomeView: View {
                     .padding(.top, 10)
                     
                     Button(action: {
-                        hd.resetDailyIntake()
+                        isPresentingConf = true
                     }) {
                         Text("Reset")
                             .padding()
@@ -162,6 +163,13 @@ struct HomeView: View {
                             .fontDesign(.default)
                     }
                     .padding(.top, 10)
+                    .confirmationDialog("Are you sure?", isPresented: $isPresentingConf) {
+                        Button("Reset today's intake?", role: .destructive) {
+                            hd.resetDailyIntake()
+                        }
+                    } message: {
+                        Text("You cannot undo this action.")
+                    }
                 }
 
             }
