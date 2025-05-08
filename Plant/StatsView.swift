@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 import Charts
 
+//shows user historical hydration data
 struct StatsView: View {
     @EnvironmentObject var hd: HydrationData
     @Environment(\.modelContext) private var context
@@ -35,7 +36,7 @@ struct StatsView: View {
                 ForEach(days) { day in
                     let intake = hd.unit.value(amountInMilliliters: day.intake)
                     BarMark(
-                        x: .value("Date", formattedDate(day.date)),
+                        x: .value("Date", (day.date)),
                         y: .value("Intake", intake)
                     )
                 }
@@ -45,12 +46,11 @@ struct StatsView: View {
                     .foregroundStyle(PlantApp.colors.red)
             }
             
-            // Storing as raw type in water day which is good for graph, but need formated type for this part of display
             List {
                 ForEach(days) { day in
                     let intake = hd.unit.format(amountInMilliliters: day.intake)
                     let goal = hd.unit.format(amountInMilliliters: day.goal)
-                    Text("\(formattedDate(day.date)): \(intake)/\(goal)")
+                    Text("\(day.date): \(intake)/\(goal)")
                 }
                 .onDelete { indices in
                     for index in indices {
@@ -58,20 +58,10 @@ struct StatsView: View {
                     }
             }
             }
-            // only checks when stat view is opened, refactor to on home view opened
+            // only checks when stat view is opened, need to refactor to on home view opened
             .onAppear {
                  checkAndResetIfNewDay()
                 
-            }
-            Button(action: {
-                addDay()
-            }) {
-                Text("New Day")
-                    .padding()
-                    .frame(width: 150)
-                    .background(Color.green)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
             }
         }
     }
@@ -87,9 +77,8 @@ struct StatsView: View {
         }
     }
     
-    // adds current date rather than previous, refactor to store yesterday
     func addDay() {
-        let newDay = WaterDay(date: currentDate, goal:hd.dailyGoal, intake:hd.waterIntake)
+        let newDay = WaterDay(date: lastLoggedDate, goal:hd.dailyGoal, intake:hd.waterIntake)
         context.insert(newDay)
         hd.resetDailyIntake()
     }

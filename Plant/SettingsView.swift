@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+//manages adjusting default units, goals, and glass size for user preferences
 struct SettingsView: View {
     @EnvironmentObject var hd: HydrationData
     
@@ -15,13 +16,13 @@ struct SettingsView: View {
             Form {
                 // TODO: switch to use helper function
                 Section(header: Text("Hydration Goal")) {
-                    Stepper("Daily Goal: \(String(format: "%.2f", hd.unit.roundForDisplay(amountInMilliliters: hd.dailyGoal, ounceRound: 8, literRound: 0.25))) \(hd.unit.rawValue)",
+                    Stepper("Daily Goal: \(String(format: "%.2f", displayedValue(for: hd.dailyGoal, isGoal: true))) \(hd.unit.rawValue)",
                             value: Binding(
                                 get: {
-                                    hd.unit.roundForDisplay(amountInMilliliters: hd.dailyGoal, ounceRound: 8, literRound: 0.25)
-                                },
+                                    displayedValue(for: hd.dailyGoal, isGoal: true)
+                                    },
                                 set: { newValue in
-                                    let newGoalInML = hd.unit == .ounces ? newValue * 29.5735 : newValue * 1000
+                                    let newGoalInML = milliliters(from: newValue)
                                     hd.updateDailyGoal(newGoal: newGoalInML)
                                 }
                             ),
@@ -40,14 +41,13 @@ struct SettingsView: View {
                     }
                     .pickerStyle(SegmentedPickerStyle())
                     
-                    let glassSize = hd.unit.roundForDisplay(amountInMilliliters: hd.glassSize, ounceRound: 2, literRound: 0.25)
-                    Stepper("Glass Size: \(String(format: "%.2f", glassSize)) \(hd.unit.rawValue)",
+                    Stepper("Glass Size: \(String(format: "%.2f", displayedValue(for: hd.glassSize, isGoal: false))) \(hd.unit.rawValue)",
                             value: Binding(
                                 get: {
-                                    hd.unit.roundForDisplay(amountInMilliliters: hd.glassSize, ounceRound: 2, literRound: 0.25)
+                                    displayedValue(for: hd.glassSize, isGoal: false)
                                 },
                                 set: { newValue in
-                                    let newSizeInML = hd.unit == .ounces ? newValue * 29.5735 : newValue * 1000
+                                    let newSizeInML = milliliters(from: newValue)
                                     hd.updateGlassSize(newSize: newSizeInML)
                                 }
                             ),
@@ -62,6 +62,18 @@ struct SettingsView: View {
             }
             .navigationTitle("Settings")
         }
+        
+
+    }
+    
+    func displayedValue(for ml: Double, isGoal: Bool) -> Double {
+        let ounceRound = isGoal ? 8.0 : 2.0
+        let literRound = 0.25
+        return hd.unit.roundForDisplay(amountInMilliliters: ml, ounceRound: ounceRound, literRound: literRound)
+    }
+
+    func milliliters(from value: Double) -> Double {
+        return hd.unit.milliliters(from: value)
     }
 }
 

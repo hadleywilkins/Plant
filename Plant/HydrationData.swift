@@ -8,7 +8,7 @@
 import SwiftUI
 import WidgetKit
 
-//responsible for managing and persisting the user's hydration data.
+//responsible for managing and persisting the user's daily hydration data.
 class HydrationData: ObservableObject {
     
     let widgetData = UserDefaults(suiteName: "group.com.resariha.plantwidget")
@@ -42,13 +42,15 @@ class HydrationData: ObservableObject {
         }
         
         func roundForDisplay(amountInMilliliters: Double, ounceRound: Double, literRound: Double) -> Double {
-            switch self {
-                case .ounces:
-                    return (round(value(amountInMilliliters: amountInMilliliters) / ounceRound) * ounceRound)
-                case .liters:
-                    return (round(value(amountInMilliliters: amountInMilliliters) / literRound) * literRound)
+                let displayValue = value(amountInMilliliters: amountInMilliliters)
+                let roundingFactor = self == .ounces ? ounceRound : literRound
+                return (round(displayValue / roundingFactor) * roundingFactor)
             }
-        }
+
+            // Converts a rounded display unit value back to milliliters
+            func milliliters(from displayValue: Double) -> Double {
+                return self == .ounces ? displayValue * 29.5735 : displayValue * 1000.0
+            }
         
     }
 

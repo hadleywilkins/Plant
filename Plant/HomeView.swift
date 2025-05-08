@@ -130,9 +130,8 @@ struct HomeView: View {
                     .frame(width: 200)
                     .scaleEffect(x: 1, y: 3, anchor: .center)
                 
-                //Text("\(hydrationData.unit.format(amountInMilliliters: hydrationData.waterIntake)) / \(hydrationData.unit.format(amountInMilliliters: hydrationData.dailyGoal))")
                 let intake = hd.unit.format(amountInMilliliters: hd.waterIntake)
-                let goal = hd.unit.roundForDisplay(amountInMilliliters: hd.dailyGoal, ounceRound: 8, literRound: 0.25)
+                let goal = String(format: "%.2f",hd.unit.roundForDisplay(amountInMilliliters: hd.dailyGoal, ounceRound: 8, literRound: 0.25))
                 Text("\(intake) / \(goal)")
                     .font(.system(.headline, design:.default))
                     .foregroundColor(PlantApp.colors.darkbrown)
