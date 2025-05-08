@@ -8,6 +8,7 @@
 import SwiftUI
 import WidgetKit
 
+//responsible for managing and persisting the user's hydration data.
 class HydrationData: ObservableObject {
     
     let widgetData = UserDefaults(suiteName: "group.com.resariha.plantwidget")

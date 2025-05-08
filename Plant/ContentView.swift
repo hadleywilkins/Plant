@@ -4,14 +4,15 @@
 //
 //  Created by redding sauter on 3/5/25.
 //
+//main user interface of plant app
 
 import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @StateObject var hd = HydrationData()
+    @StateObject var hd = HydrationData() //shared hydration data across views
     
-    private var container: ModelContainer
+    private var container: ModelContainer //swift data model container for persistent storage
     
     init() {
         do {
