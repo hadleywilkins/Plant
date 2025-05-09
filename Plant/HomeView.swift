@@ -71,16 +71,28 @@ class PlantGrow: SKScene {
     }
     
     func startSwayingLeaves() {
+        
         for leafNode in leafNodes {
+                let angle = CGFloat.random(in: 0.005...0.015)
+                let duration = Double.random(in: 0.8...1.6)
+                let rotateLeft = SKAction.rotate(toAngle: angle, duration: duration)
+                let rotateRight = SKAction.rotate(toAngle: -angle, duration: duration)
+                rotateLeft.timingMode = .easeInEaseOut
+                rotateRight.timingMode = .easeInEaseOut
+                let swaySequence = SKAction.sequence([rotateLeft, rotateRight])
+                let swayForever = SKAction.repeatForever(swaySequence)
+                leafNode.run(swayForever)
             
-            //            trying rotation here:
-            let rotateLeft = SKAction.rotate(toAngle: 0.01, duration: 1)
-            let rotateRight = SKAction.rotate(toAngle: -0.01, duration: 1)
-            rotateLeft.timingMode = .easeInEaseOut
-            rotateRight.timingMode = .easeInEaseOut
-            let group = SKAction.sequence([rotateLeft, rotateRight])
-            let sway = SKAction.repeatForever(group)
-            leafNode.run(sway)
+//        for leafNode in leafNodes {
+//            
+//            //            trying rotation here:
+//            let rotateLeft = SKAction.rotate(toAngle: 0.01, duration: 1)
+//            let rotateRight = SKAction.rotate(toAngle: -0.01, duration: 1)
+//            rotateLeft.timingMode = .easeInEaseOut
+//            rotateRight.timingMode = .easeInEaseOut
+//            let group = SKAction.sequence([rotateLeft, rotateRight])
+//            let sway = SKAction.repeatForever(group)
+//            leafNode.run(sway)
             
             //Trying movement here
 //            let moveRight = SKAction.moveBy(x:0.5, y: 0, duration: 0.1)
