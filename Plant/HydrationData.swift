@@ -8,8 +8,10 @@
 import SwiftUI
 import WidgetKit
 
+/// Info about current goal and hydration progress
 class HydrationData: ObservableObject {
     
+    // you may have to change this (here and in PlantWidget) to run on your account!
     let widgetData = UserDefaults(suiteName: "group.com.resariha.plantwidget")
     
     @AppStorage("waterIntake") var waterIntake: Double = 0 //Store in mL

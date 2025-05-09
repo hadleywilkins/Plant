@@ -49,7 +49,6 @@ class PlantGrow: SKScene {
             )
             leafNode.anchorPoint = anchor
             leafNode.setScale(0)
-            //leafNode.anchorPoint = CGPoint(x: 1, y: 1)
             addChild(leafNode)
             leafNodes.append(leafNode)
         }
@@ -82,26 +81,6 @@ class PlantGrow: SKScene {
                 let swaySequence = SKAction.sequence([rotateLeft, rotateRight])
                 let swayForever = SKAction.repeatForever(swaySequence)
                 leafNode.run(swayForever)
-            
-//        for leafNode in leafNodes {
-//            
-//            //            trying rotation here:
-//            let rotateLeft = SKAction.rotate(toAngle: 0.01, duration: 1)
-//            let rotateRight = SKAction.rotate(toAngle: -0.01, duration: 1)
-//            rotateLeft.timingMode = .easeInEaseOut
-//            rotateRight.timingMode = .easeInEaseOut
-//            let group = SKAction.sequence([rotateLeft, rotateRight])
-//            let sway = SKAction.repeatForever(group)
-//            leafNode.run(sway)
-            
-            //Trying movement here
-//            let moveRight = SKAction.moveBy(x:0.5, y: 0, duration: 0.1)
-//            moveRight.timingMode = .easeInEaseOut
-//            let moveLeft = SKAction.moveBy(x: -0.5, y: 0, duration: 0.1)
-//            moveLeft.timingMode = .easeInEaseOut
-//            let moveBackAndForth = SKAction.repeatForever(SKAction.sequence([moveRight, moveLeft]))
-//                    leafNode.run(moveBackAndForth)
-            
         }
     }
 }
@@ -138,8 +117,6 @@ struct HomeView: View {
                         plantScene.startSwayingLeaves()
                         
                     }
-                //good for debugging/tuning layout:
-//                    .border(Color.black, width: 1)
                 
                 Text("Have you had water today?")
                     .font(.system(.title, design: .serif))

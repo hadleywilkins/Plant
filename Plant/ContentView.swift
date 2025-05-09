@@ -8,6 +8,7 @@
 import SwiftUI
 import SwiftData
 
+/// The main view that launches on startup
 struct ContentView: View {
     @StateObject var hd = HydrationData()
     
