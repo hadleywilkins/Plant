@@ -63,16 +63,6 @@ struct StatsView: View {
                  checkAndResetIfNewDay()
                 
             }
-            Button(action: {
-                addDay()
-            }) {
-                Text("New Day")
-                    .padding()
-                    .frame(width: 150)
-                    .background(Color.green)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-            }
         }
     }
     

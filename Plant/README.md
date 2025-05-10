@@ -30,7 +30,7 @@ To run this app locally:
 2. Open the project in Xcode (compatible with iOS 18 or later).
 
 3. Replace the group identifier:
-Open the widget and main app targets, and change "group.com.resariha.plantwidget" to your own unique app group ID in Signing & Capabilities.
+Open the widget and main app targets, and change "group.com.resariha.plantwidget" to your own unique app group ID in Signing & Capabilities. You will have to edit this in the HydrationData and PlantWidget files.
 
 4. Build and run on a physical device or simulator.
 

@@ -8,10 +8,9 @@
 import Foundation
 import SwiftData
 
+/// stores a past day's hydration data
 @Model
 class WaterDay {
-    // TODO: figure out how the Date() class works
-//    @Attribute(.unique)
     var date: Date
     var goal: Double
     var intake: Double
