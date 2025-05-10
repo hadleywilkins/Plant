@@ -88,10 +88,7 @@ class PlantGrow: SKScene {
                 let swaySequence = SKAction.sequence([rotateLeft, rotateRight])
                 let swayForever = SKAction.repeatForever(swaySequence)
                 leafNode.run(swayForever)
-<<<<<<< HEAD
-            
-=======
->>>>>>> f35214504599427af75503c4274576ff0e6db670
+
         }
     }
 }
@@ -129,11 +126,7 @@ struct HomeView: View {
         
                         
                     }
-<<<<<<< HEAD
-            
-=======
-                
->>>>>>> f35214504599427af75503c4274576ff0e6db670
+
                 Text("Have you had water today?")
                     .font(.system(.title, design: .serif))
                     .fontWidth(.compressed)
