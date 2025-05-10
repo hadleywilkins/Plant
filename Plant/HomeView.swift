@@ -11,6 +11,7 @@ import Oklch
 import Metal
 
 
+/// SpriteKit scene that visually represents a plant with growing leaves based on hydration data.
 class PlantGrow: SKScene {
     private var leafNodes: [SKSpriteNode] = []
     private var potNode: SKSpriteNode!
@@ -23,7 +24,6 @@ class PlantGrow: SKScene {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // automatically called when the scene is fully presented by its SKView
     override func didMove(to view: SKView) {
         self.backgroundColor = .clear
         // Static pot
@@ -38,6 +38,7 @@ class PlantGrow: SKScene {
         stemNode.position = CGPoint(x:100, y: 75)
         addChild(stemNode)
         
+        // Leaves being anchored
         let anchorJSON = NSDataAsset(name: "leaf_anchors")!
         let anchors = try! JSONDecoder().decode([CGPoint].self, from: anchorJSON.data)
         
@@ -57,11 +58,8 @@ class PlantGrow: SKScene {
     }
     
     
-    
+    //Custom function to grow leaves of the plant. Leaves grow in sequence so some appear faster than others.
     func setPlantHealth(_ health: CGFloat) {
-        
-        
-        
         let leafGrowthTime = 0.5
         let maxLeafStartTime = 1 - leafGrowthTime
         for (leafNum, leafNode) in leafNodes.enumerated() {
