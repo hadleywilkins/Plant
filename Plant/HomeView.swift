@@ -32,6 +32,7 @@ class PlantGrow: SKScene {
         potNode.position = CGPoint(x: size.width / 2, y: size.width / 2)
         addChild(potNode)
         
+        // Static Stem
         stemNode = SKSpriteNode(imageNamed: "stem")
         stemNode.size = CGSize(width: 200, height: 200)
         stemNode.position = CGPoint(x:100, y: 75)
@@ -49,13 +50,18 @@ class PlantGrow: SKScene {
             )
             leafNode.anchorPoint = anchor
             leafNode.setScale(0)
-            //leafNode.anchorPoint = CGPoint(x: 1, y: 1)
             addChild(leafNode)
             leafNodes.append(leafNode)
+
         }
     }
     
+    
+    
     func setPlantHealth(_ health: CGFloat) {
+        
+        
+        
         let leafGrowthTime = 0.5
         let maxLeafStartTime = 1 - leafGrowthTime
         for (leafNum, leafNode) in leafNodes.enumerated() {
@@ -83,25 +89,6 @@ class PlantGrow: SKScene {
                 let swayForever = SKAction.repeatForever(swaySequence)
                 leafNode.run(swayForever)
             
-//        for leafNode in leafNodes {
-//            
-//            //            trying rotation here:
-//            let rotateLeft = SKAction.rotate(toAngle: 0.01, duration: 1)
-//            let rotateRight = SKAction.rotate(toAngle: -0.01, duration: 1)
-//            rotateLeft.timingMode = .easeInEaseOut
-//            rotateRight.timingMode = .easeInEaseOut
-//            let group = SKAction.sequence([rotateLeft, rotateRight])
-//            let sway = SKAction.repeatForever(group)
-//            leafNode.run(sway)
-            
-            //Trying movement here
-//            let moveRight = SKAction.moveBy(x:0.5, y: 0, duration: 0.1)
-//            moveRight.timingMode = .easeInEaseOut
-//            let moveLeft = SKAction.moveBy(x: -0.5, y: 0, duration: 0.1)
-//            moveLeft.timingMode = .easeInEaseOut
-//            let moveBackAndForth = SKAction.repeatForever(SKAction.sequence([moveRight, moveLeft]))
-//                    leafNode.run(moveBackAndForth)
-            
         }
     }
 }
@@ -127,7 +114,7 @@ struct HomeView: View {
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing)
                 .ignoresSafeArea()
-//            background color/gradient
+
             
             VStack(spacing: 20) {
                 
@@ -136,11 +123,10 @@ struct HomeView: View {
                     .onChange(of: hd.waterIntake) {
                         plantScene.setPlantHealth(hd.waterIntake / hd.dailyGoal)
                         plantScene.startSwayingLeaves()
+        
                         
                     }
-                //good for debugging/tuning layout:
-//                    .border(Color.black, width: 1)
-                
+            
                 Text("Have you had water today?")
                     .font(.system(.title, design: .serif))
                     .fontWidth(.compressed)
