@@ -19,7 +19,7 @@ struct StatsView: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            Text("Hydration Stats")
+            Text("Hydration Data")
                 .font(.largeTitle)
                 .fontWeight(.bold)
 
@@ -77,9 +77,10 @@ struct StatsView: View {
         }
     }
     
-    // adds current date rather than previous, refactor to store yesterday
+    // saves last log water intake as yesterday
     func addDay() {
-        let newDay = WaterDay(date: currentDate, goal:hd.dailyGoal, intake:hd.waterIntake)
+        let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: Date()) ?? currentDate
+        let newDay = WaterDay(date: yesterday, goal:hd.dailyGoal, intake:hd.waterIntake)
         context.insert(newDay)
         hd.resetDailyIntake()
     }
