@@ -13,12 +13,11 @@ struct SettingsView: View {
     var body: some View {
         NavigationView {
             Form {
-                // TODO: switch to use helper function
                 Section(header: Text("Hydration Goal")) {
-                    Stepper("Daily Goal: \(String(format: "%.2f", hd.unit.roundForDisplay(amountInMilliliters: hd.dailyGoal, ounceRound: 8, literRound: 0.25))) \(hd.unit.rawValue)",
+                    Stepper("Daily Goal: \(hd.getDailyGoalFormatted())",
                             value: Binding(
                                 get: {
-                                    hd.unit.roundForDisplay(amountInMilliliters: hd.dailyGoal, ounceRound: 8, literRound: 0.25)
+                                    hd.unit.roundValue(amountInMilliliters: hd.dailyGoal, ounceRound: 8, literRound: 0.5)
                                 },
                                 set: { newValue in
                                     let newGoalInML = hd.unit == .ounces ? newValue * 29.5735 : newValue * 1000
@@ -26,7 +25,7 @@ struct SettingsView: View {
                                 }
                             ),
                             in: hd.unit == .ounces ? 32...160 : 1...5,
-                            step: hd.unit == .ounces ? 8 : 0.25
+                            step: hd.unit == .ounces ? 8 : 0.5
                     )
                     Text("Set your daily water intake goal based on your needs.")
                         .font(.subheadline)
@@ -40,11 +39,11 @@ struct SettingsView: View {
                     }
                     .pickerStyle(SegmentedPickerStyle())
                     
-                    let glassSize = hd.unit.roundForDisplay(amountInMilliliters: hd.glassSize, ounceRound: 2, literRound: 0.25)
-                    Stepper("Glass Size: \(String(format: "%.2f", glassSize)) \(hd.unit.rawValue)",
+
+                    Stepper("Glass Size: \(hd.getGlassSizeFormatted())", //fix round for display
                             value: Binding(
                                 get: {
-                                    hd.unit.roundForDisplay(amountInMilliliters: hd.glassSize, ounceRound: 2, literRound: 0.25)
+                                    hd.unit.roundValue(amountInMilliliters: hd.glassSize, ounceRound: 2, literRound: 0.25 )
                                 },
                                 set: { newValue in
                                     let newSizeInML = hd.unit == .ounces ? newValue * 29.5735 : newValue * 1000

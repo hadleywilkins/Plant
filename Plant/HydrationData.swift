@@ -22,17 +22,17 @@ class HydrationData: ObservableObject {
     enum Unit: String {
         case ounces = "oz"
         case liters = "L"
-
-        func format(amountInMilliliters: Double) -> String {
+        
+        //refactor to use bool fineGrain true or false once functional
+        func format(amountInMilliliters: Double, ounceRound: Double, literRound: Double) -> String {
             switch self {
-                case .liters:
-                    let liters = amountInMilliliters / 1000
-                    return "\(String(format: "%.2f", liters)) L"
                 case .ounces:
-                    let ounces = amountInMilliliters / 29.5735
-                    return "\(String(format: "%.1f", ounces)) oz"
+                return "\(String(format: "%.1f", roundValue(amountInMilliliters: amountInMilliliters, ounceRound: ounceRound, literRound: literRound))) oz"
+                case .liters:
+                    return "\(String(format: "%.2f", roundValue(amountInMilliliters: amountInMilliliters, ounceRound: ounceRound, literRound: literRound))) L"
             }
         }
+        
         func value(amountInMilliliters: Double) -> Double {
             switch self {
                 case .ounces:
@@ -42,7 +42,7 @@ class HydrationData: ObservableObject {
             }
         }
         
-        func roundForDisplay(amountInMilliliters: Double, ounceRound: Double, literRound: Double) -> Double {
+        func roundValue(amountInMilliliters: Double, ounceRound: Double, literRound: Double) -> Double {
             switch self {
                 case .ounces:
                     return (round(value(amountInMilliliters: amountInMilliliters) / ounceRound) * ounceRound)
@@ -54,8 +54,11 @@ class HydrationData: ObservableObject {
     }
 
     func logGlassOfWater() {
-        if waterIntake < dailyGoal {
+        if waterIntake + glassSize < dailyGoal { //if glass bigger than amount of water remaining, won't log
             waterIntake += glassSize
+        }
+        if waterIntake > dailyGoal{
+            waterIntake = dailyGoal
         }
         syncToWidget()
     }
@@ -72,14 +75,18 @@ class HydrationData: ObservableObject {
     func updateGlassSize(newSize: Double) {
         glassSize = newSize
     }
-
+    
     func getTotalIntakeFormatted() -> String {
-        return unit.format(amountInMilliliters: waterIntake)
-    }
+        return unit.format(amountInMilliliters: waterIntake, ounceRound: 2, literRound: 0.25)
+        }
 
     func getDailyGoalFormatted() -> String {
-        return unit.format(amountInMilliliters: dailyGoal)
-    }
+            return unit.format(amountInMilliliters: dailyGoal, ounceRound: 8, literRound: 0.5 )
+        }
+    
+    func getGlassSizeFormatted() -> String {
+            return unit.format(amountInMilliliters: glassSize, ounceRound: 2, literRound: 0.25 )
+        }
 
     func resetDailyIntake() {
         waterIntake = 0

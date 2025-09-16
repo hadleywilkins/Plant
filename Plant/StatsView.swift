@@ -48,8 +48,8 @@ struct StatsView: View {
             // Storing as raw type in water day which is good for graph, but need formated type for this part of display
             List {
                 ForEach(days) { day in
-                    let intake = hd.unit.format(amountInMilliliters: day.intake)
-                    let goal = hd.unit.format(amountInMilliliters: day.goal)
+                    let intake = hd.getTotalIntakeFormatted()
+                    let goal = hd.getDailyGoalFormatted()
                     Text("\(formattedDate(day.date)): \(intake)/\(goal)")
                 }
                 .onDelete { indices in

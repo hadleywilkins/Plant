@@ -136,8 +136,8 @@ struct HomeView: View {
                     .scaleEffect(x: 1, y: 3, anchor: .center)
                 
                              
-                let intake = hd.unit.format(amountInMilliliters: hd.waterIntake)
-                let goal = String(format: "%.1f", hd.unit.roundForDisplay(amountInMilliliters: hd.dailyGoal, ounceRound: 8, literRound: 0.25))
+                let intake = hd.getTotalIntakeFormatted()
+                let goal = hd.getDailyGoalFormatted()
                 Text("\(intake) / \(goal) oz")
                     .font(.system(.headline, design:.default))
                     .foregroundColor(PlantApp.colors.darkbrown)
