@@ -54,7 +54,7 @@ class HydrationData: ObservableObject {
     }
 
     func logGlassOfWater() {
-        if waterIntake + glassSize < dailyGoal { //if glass bigger than amount of water remaining, won't log
+        if waterIntake < dailyGoal { //if glass bigger than amount of water remaining, won't log
             waterIntake += glassSize
         }
         if waterIntake > dailyGoal{
