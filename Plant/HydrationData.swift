@@ -23,13 +23,26 @@ class HydrationData: ObservableObject {
         case ounces = "oz"
         case liters = "L"
         
-        //refactor to use bool fineGrain true or false once functional
-        func format(amountInMilliliters: Double, ounceRound: Double, literRound: Double) -> String {
+        var coarseGrain: Double {
+            switch self {
+                case .ounces: return 8
+                case .liters: return 0.5
+            }
+        }
+        
+        var fineGrain: Double {
+            switch self {
+                case .ounces: return 2
+                case .liters: return 0.25
+            }
+        }
+        
+        func format(amountInMilliliters: Double, grainCoarse: Bool) -> String {
             switch self {
                 case .ounces:
-                return "\(String(format: "%.1f", roundValue(amountInMilliliters: amountInMilliliters, ounceRound: ounceRound, literRound: literRound))) oz"
+                return "\(String(format: "%.1f", roundValue(amountInMilliliters: amountInMilliliters, grainCoarse: grainCoarse))) oz"
                 case .liters:
-                    return "\(String(format: "%.2f", roundValue(amountInMilliliters: amountInMilliliters, ounceRound: ounceRound, literRound: literRound))) L"
+                    return "\(String(format: "%.2f", roundValue(amountInMilliliters: amountInMilliliters, grainCoarse: grainCoarse))) L"
             }
         }
         
@@ -42,13 +55,10 @@ class HydrationData: ObservableObject {
             }
         }
         
-        func roundValue(amountInMilliliters: Double, ounceRound: Double, literRound: Double) -> Double {
-            switch self {
-                case .ounces:
-                    return (round(value(amountInMilliliters: amountInMilliliters) / ounceRound) * ounceRound)
-                case .liters:
-                    return (round(value(amountInMilliliters: amountInMilliliters) / literRound) * literRound)
-            }
+        func roundValue(amountInMilliliters: Double, grainCoarse: Bool) -> Double {
+            let raw = value(amountInMilliliters: amountInMilliliters)
+            let grain = grainCoarse ? coarseGrain : fineGrain
+            return round(raw / grain) * grain
         }
         
     }
@@ -77,15 +87,15 @@ class HydrationData: ObservableObject {
     }
     
     func getTotalIntakeFormatted() -> String {
-        return unit.format(amountInMilliliters: waterIntake, ounceRound: 2, literRound: 0.25)
+        return unit.format(amountInMilliliters: waterIntake, grainCoarse: false)
         }
 
     func getDailyGoalFormatted() -> String {
-            return unit.format(amountInMilliliters: dailyGoal, ounceRound: 8, literRound: 0.5 )
+            return unit.format(amountInMilliliters: dailyGoal, grainCoarse: true )
         }
     
     func getGlassSizeFormatted() -> String {
-            return unit.format(amountInMilliliters: glassSize, ounceRound: 2, literRound: 0.25 )
+            return unit.format(amountInMilliliters: glassSize, grainCoarse: false )
         }
 
     func resetDailyIntake() {

@@ -17,7 +17,7 @@ struct SettingsView: View {
                     Stepper("Daily Goal: \(hd.getDailyGoalFormatted())",
                             value: Binding(
                                 get: {
-                                    hd.unit.roundValue(amountInMilliliters: hd.dailyGoal, ounceRound: 8, literRound: 0.5)
+                                    hd.unit.roundValue(amountInMilliliters: hd.dailyGoal, grainCoarse: true)
                                 },
                                 set: { newValue in
                                     let newGoalInML = hd.unit == .ounces ? newValue * 29.5735 : newValue * 1000
@@ -43,7 +43,7 @@ struct SettingsView: View {
                     Stepper("Glass Size: \(hd.getGlassSizeFormatted())", //fix round for display
                             value: Binding(
                                 get: {
-                                    hd.unit.roundValue(amountInMilliliters: hd.glassSize, ounceRound: 2, literRound: 0.25 )
+                                    hd.unit.roundValue(amountInMilliliters: hd.glassSize, grainCoarse: false)
                                 },
                                 set: { newValue in
                                     let newSizeInML = hd.unit == .ounces ? newValue * 29.5735 : newValue * 1000
