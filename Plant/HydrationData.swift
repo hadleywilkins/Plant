@@ -90,6 +90,7 @@ class HydrationData: ObservableObject {
 
     func resetDailyIntake() {
         waterIntake = 0
+        syncToWidget()
     }
     
     func syncToWidget() {
