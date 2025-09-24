@@ -1,3 +1,10 @@
+//
+//  StatsView.swift
+//  Plant
+//
+//  Created by Hadley Wilkins on 3/26/25.
+//
+
 import SwiftUI
 import SwiftData
 import Charts
@@ -22,6 +29,7 @@ struct StatsView: View {
                 Text("Hydration Data")
                     .font(.largeTitle)
                     .fontWeight(.bold)
+                    .foregroundColor(PlantApp.colors.darkbrown)
                 
                 ProgressView(value: Double(hd.waterIntake), total: Double(hd.dailyGoal))
                     .progressViewStyle(LinearProgressViewStyle())
@@ -29,7 +37,7 @@ struct StatsView: View {
                 
                 Text("\(hd.getTotalIntakeFormatted()) / \(hd.getDailyGoalFormatted())")
                     .font(.subheadline)
-                    .foregroundColor(.gray)
+                    .foregroundColor(.white.opacity(0.85))
                 
                 Chart {
                     ForEach(days) { day in
