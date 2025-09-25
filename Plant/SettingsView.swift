@@ -14,7 +14,6 @@ struct SettingsView: View {
     @State private var notificationTime = Date()
     
     var body: some View {
-        NavigationView {
             ZStack {
                 LinearGradient(
                     gradient: Gradient(colors: [PlantApp.colors.tan, PlantApp.colors.brown]),
@@ -105,7 +104,6 @@ struct SettingsView: View {
             .navigationTitle("Settings")
         }
     }
-}
 
 //Helpers
 extension View {
