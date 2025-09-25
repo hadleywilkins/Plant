@@ -33,7 +33,7 @@ struct ContentView: View {
             StatsView()
                 .environmentObject(hd)
                 .tabItem {
-                    Label("Stats", systemImage: "chart.line.uptrend.xyaxis")
+                    Label("Data", systemImage: "chart.line.uptrend.xyaxis")
                 }
                 .modelContainer(container)
 

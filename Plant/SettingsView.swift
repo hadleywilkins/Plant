@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import UserNotifications
 
 struct SettingsView: View {
     @EnvironmentObject var hd: HydrationData
+    @State private var testNotificationEnabled = false
+    @State private var notificationTime = Date()
     
     var body: some View {
         NavigationView {
@@ -19,7 +22,7 @@ struct SettingsView: View {
                     endPoint: .bottom
                 )
                 .ignoresSafeArea()
-
+                
                 List {
                     // Hydration Goal
                     Section {
@@ -38,20 +41,13 @@ struct SettingsView: View {
                             Text("Set your daily water intake goal based on your needs.")
                                 .font(.subheadline)
                                 .foregroundColor(.white.opacity(0.85))
-                        }
-                        .padding()
-                        .background(PlantApp.colors.tan)
-                        .cornerRadius(12)
-                        .padding(.horizontal) // 👈 space from screen edges
-                    } header: {
-                        Text("Hydration Goal")
-                            .foregroundColor(PlantApp.colors.darkbrown)
-                            .padding(.leading) // align header with card
                     }
-                    .listRowInsets(EdgeInsets())
-                    .listRowBackground(Color.clear)
-                    .listRowSeparator(.hidden)
-
+                    .cardStyle()
+                } header: {
+                    Text("Hydration Goal")
+                        .sectionHeaderStyle()
+                }
+                    
                     // Measurement Units
                     Section {
                         VStack(alignment: .leading, spacing: 8) {
@@ -60,7 +56,8 @@ struct SettingsView: View {
                                 Text("Liters (L)").tag(HydrationData.Unit.liters)
                             }
                             .pickerStyle(.segmented)
-
+                            .tint(PlantApp.colors.darkbrown)
+                            
                             Stepper("Glass Size: \(hd.getGlassSizeFormatted())",
                                     value: Binding(
                                         get: { hd.unit.roundValue(amountInMilliliters: hd.glassSize, grainCoarse: false) },
@@ -76,18 +73,29 @@ struct SettingsView: View {
                                 .font(.subheadline)
                                 .foregroundColor(.white.opacity(0.85))
                         }
-                        .padding()
-                        .background(PlantApp.colors.tan)
-                        .cornerRadius(12)
-                        .padding(.horizontal) // 👈 space from screen edges
+                        .cardStyle()
                     } header: {
                         Text("Measurement Units")
-                            .foregroundColor(PlantApp.colors.darkbrown)
-                            .padding(.leading)
+                            .sectionHeaderStyle()
                     }
-                    .listRowInsets(EdgeInsets())
-                    .listRowBackground(Color.clear)
-                    .listRowSeparator(.hidden)
+                    
+                Section() {
+                        Toggle("Enable Notifictions", isOn: $testNotificationEnabled)
+                                .toggleStyle(.switch)
+                                .tint(PlantApp.colors.darkbrown)
+                                .onChange(of: testNotificationEnabled) { newValue in
+                                        if newValue {
+                                            NotificationManager.scheduleTestNotification()
+                                        } else {
+                                            NotificationManager.cancelTestNotification()
+                                        }
+                                }
+                                .cardStyle()
+                        } header: {
+                            Text("Notifications")
+                                .sectionHeaderStyle()
+                        }
+                        
                 }
                 .scrollContentBackground(.hidden)
                 .background(Color.clear)
@@ -98,3 +106,50 @@ struct SettingsView: View {
         }
     }
 }
+
+//Helpers
+extension View {
+    func cardStyle() -> some View {
+        self.padding()
+            .background(PlantApp.colors.tan)
+            .cornerRadius(10)
+            .padding(.horizontal)
+            .listRowInsets(EdgeInsets())
+            .listRowBackground(Color.clear)
+            .listRowSeparator(.hidden)
+    }
+    
+    func sectionHeaderStyle() -> some View {
+        self.foregroundColor(PlantApp.colors.darkbrown)
+            .frame(maxWidth: .infinity, alignment: .center)
+    }
+}
+
+enum NotificationManager {
+    static func requestPermission() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+            if success {
+                print("Permission approved!")
+            } else if let error = error {
+                print("Notification permission error: \(error.localizedDescription)")
+            }
+        }
+    }
+        
+        static func scheduleTestNotification() {
+            let content = UNMutableNotificationContent()
+            content.title = "Hydration Reminder"
+            content.subtitle = "Time for a glass of water 💧"
+            content.sound = .default
+            
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+            let request = UNNotificationRequest(identifier: "basic_notification", content: content, trigger: trigger)
+            
+            UNUserNotificationCenter.current().add(request)
+            
+        }
+        
+        static func cancelTestNotification() {
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["test_notification"])
+        }
+    }
