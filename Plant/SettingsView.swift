@@ -10,8 +10,10 @@ import UserNotifications
 
 struct SettingsView: View {
     @EnvironmentObject var hd: HydrationData
-    @State private var testNotificationEnabled = false
+    @AppStorage("notificationsEnabled") private var notificationsEnabled: Bool = false
     @State private var notificationTime = Date()
+    @AppStorage("notificationFrequency") private var notificationFrequency: String = "once"
+
     
     var body: some View {
             ZStack {
@@ -79,21 +81,45 @@ struct SettingsView: View {
                     }
                     
                 Section() {
-                        Toggle("Enable Notifictions", isOn: $testNotificationEnabled)
+                        Toggle("Enable Notifictions", isOn: $notificationsEnabled)
                                 .toggleStyle(.switch)
                                 .tint(PlantApp.colors.darkbrown)
-                                .onChange(of: testNotificationEnabled) { newValue in
-                                        if newValue {
-                                            NotificationManager.scheduleTestNotification()
-                                        } else {
-                                            NotificationManager.cancelTestNotification()
-                                        }
+                                .onChange(of: notificationsEnabled) { _, newValue in
+                                    if newValue {
+                                        NotificationManager.scheduleNotification()
+                                    }
                                 }
                                 .cardStyle()
+                                .padding()
                         } header: {
                             Text("Notifications")
                                 .sectionHeaderStyle()
                         }
+            
+                if notificationsEnabled {
+                        Section() {
+                            VStack(alignment: .leading, spacing: 12) {
+                                DatePicker(
+                                    "Reminder Time",
+                                    selection: $notificationTime,
+                                    displayedComponents: .hourAndMinute
+                                )
+                                .datePickerStyle(.wheel)
+                                .tint(PlantApp.colors.darkbrown)
+                                
+                                Picker("Frequency", selection: $notificationFrequency) {
+                                    Text("Once a Day").tag("once")
+                                    Text("Twice a Day").tag("twice")
+                                }
+                                .pickerStyle(.menu)
+                            }
+                            .cardStyle()
+                            .onChange(of: notificationTime) {_, newValue in
+                                NotificationManager.scheduleNotification()
+                            }
+                        }
+                    }
+                    
                         
                 }
                 .scrollContentBackground(.hidden)
@@ -134,10 +160,10 @@ enum NotificationManager {
         }
     }
         
-        static func scheduleTestNotification() {
+        static func scheduleNotification() {
             let content = UNMutableNotificationContent()
-            content.title = "Hydration Reminder"
-            content.subtitle = "Time for a glass of water 💧"
+            content.title = "Water me!"
+            content.subtitle = "Time to hydrate"
             content.sound = .default
             
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
@@ -147,7 +173,7 @@ enum NotificationManager {
             
         }
         
-        static func cancelTestNotification() {
-            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["test_notification"])
+        static func cancelNotification() {
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["basic_notification"])
         }
     }
