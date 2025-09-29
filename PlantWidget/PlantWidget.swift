@@ -65,7 +65,8 @@ struct widView: View {
     private var plantImageName: String {
         let goal = max(entry.goal, 0)
         
-        let ratio = (goal > 0) ? max(0, min(1, entry.intake / goal)) : 0
+        let ratio = entry.intake / goal
+        
         
         let index: Int
         if ratio == 0 {
