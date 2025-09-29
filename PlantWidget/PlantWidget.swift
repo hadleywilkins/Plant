@@ -15,8 +15,8 @@ struct PlantWidget: Widget {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             widView(entry: entry)
         }
-        .configurationDisplayName("Your Widget")
-        .description("This is an example widget.")
+        .configurationDisplayName("Plant Widget")
+        .description("This is a Widget of the plant app")
     }
 }
 
@@ -61,9 +61,32 @@ struct Provider: TimelineProvider {
 
 struct widView: View {
     var entry: Provider.Entry
+    
+    private var plantImageName: String {
+        let goal = max(entry.goal, 0)
+        
+        let ratio = (goal > 0) ? max(0, min(1, entry.intake / goal)) : 0
+        
+        let index: Int
+        if ratio == 0 {
+            index = 1
+        } else {
+
+            index = min(5, Int(ceil(ratio * 4)) + 1)
+        }
+        return "plant_\(index)"
+    }
 
     var body: some View {
+
         VStack {
+            
+            Image(plantImageName)
+            .resizable()
+            .scaledToFit()
+            .frame(width: 200, height: 200)
+            
+            
             Text("Water Intake: ")
                 .font(.title)
             
