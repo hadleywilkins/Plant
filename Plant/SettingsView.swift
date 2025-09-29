@@ -11,9 +11,7 @@ import UserNotifications
 struct SettingsView: View {
     @EnvironmentObject var hd: HydrationData
     @AppStorage("notificationsEnabled") private var notificationsEnabled: Bool = false
-    @State private var notificationTime = Date()
     @AppStorage("notificationFrequency") private var notificationFrequency: String = "once"
-
     
     var body: some View {
             ZStack {
@@ -79,16 +77,28 @@ struct SettingsView: View {
                         Text("Measurement Units")
                             .sectionHeaderStyle()
                     }
-                    
+                //Notification Picker
                 Section() {
                         Toggle("Enable Notifictions", isOn: $notificationsEnabled)
                                 .toggleStyle(.switch)
                                 .tint(PlantApp.colors.darkbrown)
                                 .onChange(of: notificationsEnabled) { _, newValue in
                                     if newValue {
-                                        NotificationManager.scheduleNotification()
+                                        NotificationManager.requestPermission { granted in
+                                            DispatchQueue.main.async {
+                                                if granted {
+                                                    NotificationManager.scheduleNotifications(frequency: notificationFrequency)
+                                                } else {
+                                                    notificationsEnabled = false // reset toggle if denied
+                                                    }
+                                                }
+                                            }
+                                        } else {
+                                            NotificationManager.cancelNotifications()
+                                                        // keep the stored frequency, so when user toggles back on,
+                                                        // we know what to reschedule
+                                        }
                                     }
-                                }
                                 .cardStyle()
                                 .padding()
                         } header: {
@@ -99,28 +109,19 @@ struct SettingsView: View {
                 if notificationsEnabled {
                         Section() {
                             VStack(alignment: .leading, spacing: 12) {
-                                DatePicker(
-                                    "Reminder Time",
-                                    selection: $notificationTime,
-                                    displayedComponents: .hourAndMinute
-                                )
-                                .datePickerStyle(.wheel)
-                                .tint(PlantApp.colors.darkbrown)
-                                
                                 Picker("Frequency", selection: $notificationFrequency) {
                                     Text("Once a Day").tag("once")
                                     Text("Twice a Day").tag("twice")
+                                    Text("Three times a Day").tag("three")
                                 }
                                 .pickerStyle(.menu)
+                                .onChange(of: notificationFrequency) { _, newValue in
+                                    NotificationManager.scheduleNotifications(frequency: notificationFrequency)
+                                }
                             }
                             .cardStyle()
-                            .onChange(of: notificationTime) {_, newValue in
-                                NotificationManager.scheduleNotification()
-                            }
                         }
                     }
-                    
-                        
                 }
                 .scrollContentBackground(.hidden)
                 .background(Color.clear)
@@ -150,30 +151,63 @@ extension View {
 }
 
 enum NotificationManager {
-    static func requestPermission() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
-            if success {
-                print("Permission approved!")
-            } else if let error = error {
-                print("Notification permission error: \(error.localizedDescription)")
+    static func requestPermission(completion: @escaping (Bool) -> Void) {
+        UNUserNotificationCenter.current()
+                    .requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+                        if let error = error {
+                            print("Notification permission error: \(error.localizedDescription)")
+                        }
+                        completion(granted)
+                    }
+        }
+        
+    static func scheduleNotifications(frequency: String) {
+            cancelNotifications() //cancel old notifs
+        
+            let content = UNMutableNotificationContent() //set up content for new mesages
+            content.title = "Water me!"
+            content.subtitle = "Time to hydrate 💧"
+            content.sound = .default
+
+            // Decide times based on frequency
+            let hours: [Int]
+            switch frequency {
+            case "once": hours = [13]
+            case "twice": hours = [8, 19]
+            case "three": hours = [8, 13, 20]
+            default: hours = []
+            }
+
+            let notificationCenter = UNUserNotificationCenter.current()
+
+            for (index, hour) in hours.enumerated() {
+                var dateComponents = DateComponents()
+                dateComponents.hour = hour
+
+                let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+                let request = UNNotificationRequest(
+                    identifier: "hydration_\(index)", // identifiers
+                    content: content,
+                    trigger: trigger
+                )
+
+                notificationCenter.add(request) { error in
+                    if let error = error {
+                        print("Error scheduling notification: \(error.localizedDescription)") //print debug
+                    }
+                }
             }
         }
-    }
+
         
-        static func scheduleNotification() {
-            let content = UNMutableNotificationContent()
-            content.title = "Water me!"
-            content.subtitle = "Time to hydrate"
-            content.sound = .default
-            
-            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
-            let request = UNNotificationRequest(identifier: "basic_notification", content: content, trigger: trigger)
-            
-            UNUserNotificationCenter.current().add(request)
-            
-        }
-        
-        static func cancelNotification() {
-            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["basic_notification"])
+        static func cancelNotifications() {
+            let center = UNUserNotificationCenter.current()
+            center.getPendingNotificationRequests { requests in
+                let idsToRemove = requests.map(\.identifier).filter { $0.hasPrefix("hydration_") }
+                if !idsToRemove.isEmpty {
+                    center.removePendingNotificationRequests(withIdentifiers: idsToRemove)
+                    print("Cancelled notifications: \(idsToRemove)") //debug print statements
+                }
+            }
         }
     }
