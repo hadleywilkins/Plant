@@ -13,6 +13,11 @@ class PlantView: SKScene {
     private var leafNodes: [SKSpriteNode] = []
     private var potNode: SKSpriteNode!
     private var stemNode: SKSpriteNode!
+    public var plantHealth: CGFloat = 0 {
+        didSet {
+            updatePlantGraphics()
+        }
+    }
     
     override init() {
         super.init(size: .zero)
@@ -50,18 +55,19 @@ class PlantView: SKScene {
             leafNode.setScale(0)
             addChild(leafNode)
             leafNodes.append(leafNode)
-
         }
+        
+        updatePlantGraphics()
     }
     
     
     //Custom function to grow leaves of the plant. Leaves grow in sequence so some appear faster than others.
-    func setPlantHealth(_ health: CGFloat) {
+    func updatePlantGraphics() {
         let leafGrowthTime = 0.5
         let maxLeafStartTime = 1 - leafGrowthTime
         for (leafNum, leafNode) in leafNodes.enumerated() {
             let leafStartTime = maxLeafStartTime * CGFloat(leafNum) / CGFloat(leafNodes.count - 1)
-            let growthTimeElapsed = health - leafStartTime
+            let growthTimeElapsed = plantHealth - leafStartTime
             let growthLine = growthTimeElapsed / leafGrowthTime
             let newScale = min(1, max(0, growthLine)) //pinning growthline between 0 and 1
             

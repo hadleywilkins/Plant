@@ -40,10 +40,8 @@ struct HomeView: View {
                 SpriteView(scene: plantScene, options: [.allowsTransparency])
                     .frame(width: 400, height: 400)
                     .onChange(of: hd.waterIntake) {
-                        plantScene.setPlantHealth(hd.waterIntake / hd.dailyGoal)
+                        plantScene.plantHealth = hd.waterIntake / hd.dailyGoal
                         plantScene.startSwayingLeaves()
-        
-                        
                     }
 
                 Text("Have you had water today?")
@@ -101,6 +99,10 @@ struct HomeView: View {
             }
             .padding()
             
+        }
+        .onAppear {
+            plantScene.plantHealth = hd.waterIntake / hd.dailyGoal
+            plantScene.startSwayingLeaves()
         }
     }
 }

@@ -23,21 +23,40 @@ struct ArtGeneratorApp: App {
             VStack {
                 SpriteView(scene: plantScene, options: [.allowsTransparency])
                     .frame(width: 400, height: 400)
-                
-                
-                Button("Generate snapshots") {
-                    // https://stackoverflow.com/a/61720423/239816
-                    
-                    plantScene.setPlantHealth(100)
-                        
-                    let result = (plantScene.view?.texture(from: plantScene))!
-                    let image = NSImage(cgImage: result.cgImage(), size: result.size())
-                    print("------>", image)
-                    
-                    
-                    // get image, save to /tmp/plant.png
-                }
+                    .task(generateImages)
             }
+        }
+    }
+    
+    @Sendable
+    func generateImages() async {
+        // for n in 0...10 { ... }
+        // for n in 0..<10 { ... }
+        // for n in stride(from: 0, to: 100, by: 5) { ... }
+
+        // https://stackoverflow.com/a/61720423/239816
+        
+        plantScene.plantHealth = 100
+        try? await Task.sleep(for: .seconds(0.6))
+            
+        let result = (plantScene.view?.texture(from: plantScene))!
+        let image = NSImage(cgImage: result.cgImage(), size: result.size())
+
+        guard let tiffData = image.tiffRepresentation,
+        let bitmap = NSBitmapImageRep(data: tiffData),
+        let pngData = bitmap.representation(using: .png, properties: [:]) else {
+            print("Failed to create PNG data")
+            return
+        }
+        
+        let tempDir = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+        let fileURL = tempDir.appendingPathComponent("plant-\(plantScene.plantHealth).png")
+
+        do {
+            try pngData.write(to: fileURL)
+            print("Saved image to \(fileURL.path)")
+        } catch {
+            print("Error saving image:", error)
         }
     }
 }
