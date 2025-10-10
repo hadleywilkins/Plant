@@ -13,6 +13,8 @@ class PlantView: SKScene {
     private var leafNodes: [SKSpriteNode] = []
     private var potNode: SKSpriteNode!
     private var stemNode: SKSpriteNode!
+    
+    //public static let leaf duration
     public var plantHealth: CGFloat = 0 {
         didSet {
             updatePlantGraphics()

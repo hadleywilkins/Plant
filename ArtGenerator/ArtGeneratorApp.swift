@@ -35,29 +35,45 @@ struct ArtGeneratorApp: App {
         // for n in stride(from: 0, to: 100, by: 5) { ... }
 
         // https://stackoverflow.com/a/61720423/239816
+        //plantScene.plantHealth = 100
         
-        plantScene.plantHealth = 100
-        try? await Task.sleep(for: .seconds(0.6))
+
+        
+        for health in stride(from:0.0, through: 1.1, by: 0.25) {
+   
+            print("---->", health)
+            plantScene.plantHealth = health
+
             
-        let result = (plantScene.view?.texture(from: plantScene))!
-        let image = NSImage(cgImage: result.cgImage(), size: result.size())
 
-        guard let tiffData = image.tiffRepresentation,
-        let bitmap = NSBitmapImageRep(data: tiffData),
-        let pngData = bitmap.representation(using: .png, properties: [:]) else {
-            print("Failed to create PNG data")
-            return
+            try? await Task.sleep(for: .seconds(0.6))
+            
+            //try? await Task.sleep(for: .seconds(3))
+                
+            let result = (plantScene.view?.texture(from: plantScene))!
+            let image = NSImage(cgImage: result.cgImage(), size: result.size())
+
+            guard let tiffData = image.tiffRepresentation,
+            let bitmap = NSBitmapImageRep(data: tiffData),
+            let pngData = bitmap.representation(using: .png, properties: [:]) else {
+                print("Failed to create PNG data")
+                return
+            }
+            
+            let tempDir = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+            let fileURL = tempDir.appendingPathComponent("plant-\(plantScene.plantHealth).png")
+
+            do {
+                try pngData.write(to: fileURL)
+                print("Saved image to \(fileURL.path)")
+            } catch {
+                print("Error saving image:", error)
+            }
+            
+       
+            
         }
         
-        let tempDir = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-        let fileURL = tempDir.appendingPathComponent("plant-\(plantScene.plantHealth).png")
-
-        do {
-            try pngData.write(to: fileURL)
-            print("Saved image to \(fileURL.path)")
-        } catch {
-            print("Error saving image:", error)
-        }
     }
 }
 
