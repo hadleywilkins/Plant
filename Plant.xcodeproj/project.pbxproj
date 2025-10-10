@@ -60,6 +60,7 @@
 		07D52F972D8470A5001CF3FF /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		AC1B224D2D936CF90035F7BC /* PlantWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PlantWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC79A7722D9A37D600F5C91F /* PlantWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PlantWidgetExtension.entitlements; sourceTree = "<group>"; };
+		ACB40EC12E8B2919003557B3 /* ArtGenerator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ArtGenerator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -70,11 +71,22 @@
 			);
 			target = AC1B224C2D936CF90035F7BC /* PlantWidgetExtension */;
 		};
+		ACB40EED2E8B2C31003557B3 /* Exceptions for "Plant" folder in "ArtGenerator" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Assets.xcassets,
+				PlantView.swift,
+			);
+			target = ACB40EC02E8B2919003557B3 /* ArtGenerator */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		0774373F2D78DDC300D62117 /* Plant */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				ACB40EED2E8B2C31003557B3 /* Exceptions for "Plant" folder in "ArtGenerator" target */,
+			);
 			path = Plant;
 			sourceTree = "<group>";
 		};
@@ -94,6 +106,11 @@
 				AC1B22632D936CFB0035F7BC /* Exceptions for "PlantWidget" folder in "PlantWidgetExtension" target */,
 			);
 			path = PlantWidget;
+			sourceTree = "<group>";
+		};
+		ACB40EC22E8B2919003557B3 /* ArtGenerator */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ArtGenerator;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -131,6 +148,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		ACB40EBE2E8B2919003557B3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -142,6 +166,7 @@
 				077437502D78DDC500D62117 /* PlantTests */,
 				0774375A2D78DDC600D62117 /* PlantUITests */,
 				AC1B22502D936CF90035F7BC /* PlantWidget */,
+				ACB40EC22E8B2919003557B3 /* ArtGenerator */,
 				07D52F942D8470A5001CF3FF /* Frameworks */,
 				0774373E2D78DDC300D62117 /* Products */,
 			);
@@ -154,6 +179,7 @@
 				0774374D2D78DDC500D62117 /* PlantTests.xctest */,
 				077437572D78DDC600D62117 /* PlantUITests.xctest */,
 				AC1B224D2D936CF90035F7BC /* PlantWidgetExtension.appex */,
+				ACB40EC12E8B2919003557B3 /* ArtGenerator.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -264,6 +290,28 @@
 			productReference = AC1B224D2D936CF90035F7BC /* PlantWidgetExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		ACB40EC02E8B2919003557B3 /* ArtGenerator */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ACB40EE62E8B291C003557B3 /* Build configuration list for PBXNativeTarget "ArtGenerator" */;
+			buildPhases = (
+				ACB40EBD2E8B2919003557B3 /* Sources */,
+				ACB40EBE2E8B2919003557B3 /* Frameworks */,
+				ACB40EBF2E8B2919003557B3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				ACB40EC22E8B2919003557B3 /* ArtGenerator */,
+			);
+			name = ArtGenerator;
+			packageProductDependencies = (
+			);
+			productName = ArtGenerator;
+			productReference = ACB40EC12E8B2919003557B3 /* ArtGenerator.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -271,7 +319,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1620;
+				LastSwiftUpdateCheck = 1640;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
 					0774373C2D78DDC300D62117 = {
@@ -287,6 +335,9 @@
 					};
 					AC1B224C2D936CF90035F7BC = {
 						CreatedOnToolsVersion = 16.2;
+					};
+					ACB40EC02E8B2919003557B3 = {
+						CreatedOnToolsVersion = 16.4;
 					};
 				};
 			};
@@ -311,6 +362,7 @@
 				0774374C2D78DDC500D62117 /* PlantTests */,
 				077437562D78DDC600D62117 /* PlantUITests */,
 				AC1B224C2D936CF90035F7BC /* PlantWidgetExtension */,
+				ACB40EC02E8B2919003557B3 /* ArtGenerator */,
 			);
 		};
 /* End PBXProject section */
@@ -344,6 +396,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		ACB40EBF2E8B2919003557B3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -369,6 +428,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		AC1B22492D936CF90035F7BC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ACB40EBD2E8B2919003557B3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -699,6 +765,60 @@
 			};
 			name = Release;
 		};
+		ACB40EE02E8B291C003557B3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ArtGenerator/ArtGenerator.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = reddingsauter.ArtGenerator;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		ACB40EE12E8B291C003557B3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ArtGenerator/ArtGenerator.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = reddingsauter.ArtGenerator;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -743,6 +863,15 @@
 			buildConfigurations = (
 				AC1B22612D936CFB0035F7BC /* Debug */,
 				AC1B22622D936CFB0035F7BC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ACB40EE62E8B291C003557B3 /* Build configuration list for PBXNativeTarget "ArtGenerator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ACB40EE02E8B291C003557B3 /* Debug */,
+				ACB40EE12E8B291C003557B3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

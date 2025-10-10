@@ -68,14 +68,15 @@ struct widView: View {
         let ratio = entry.intake / goal
         
         
-        let index: Int
+        let index: CGFloat
         if ratio == 0 {
-            index = 1
+            index = 0.0
         } else {
 
-            index = min(5, Int(ceil(ratio * 4)) + 1)
+            index = min(1.0, (ceil(ratio * 4)))
         }
-        return "plant_\(index)"
+        print("----->", index)
+        return "plant-\(index)"
     }
 
     var body: some View {
