@@ -63,20 +63,12 @@ struct widView: View {
     var entry: Provider.Entry
     
     private var plantImageName: String {
-        let goal = max(entry.goal, 0)
         
+        let goal = max(entry.goal, 1)
         let ratio = entry.intake / goal
-        
-        
-        let index: CGFloat
-        if ratio == 0 {
-            index = 0.0
-        } else {
-
-            index = min(1.0, (ceil(ratio * 4)))
-        }
-        print("----->", index)
-        return "plant-\(index)"
+        let clamped = min(max(ratio, 0), 1)
+        let step = (clamped * 4).rounded() / 4
+        return "plant-\(step)"
     }
 
     var body: some View {
