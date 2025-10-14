@@ -8,8 +8,10 @@
 import SwiftUI
 import WidgetKit
 
+
 struct PlantWidget: Widget {
     let kind: String = "PlantWidget"
+    
 
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
@@ -80,20 +82,27 @@ struct widView: View {
     }
 
     var body: some View {
-
+        
         VStack {
-            
             Image(plantImageName)
-            .resizable()
-            .scaledToFit()
-            .frame(width: 200, height: 200)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 220, height: 220)
             
             
             Text("Water Intake: ")
-                .font(.title)
+                .font(.system(.title, design: .serif))
+                .fontWidth(.compressed)
+                .fontWeight(.bold)
+                .foregroundColor(Color(red: 0.36, green: 0.25, blue: 0.20))
             
             ProgressView(value: Double(entry.intake), total: Double(entry.goal))
-                    .progressViewStyle(LinearProgressViewStyle(tint: .blue))
+                .progressViewStyle(LinearProgressViewStyle(tint: .blue))
+                .scaleEffect(x: 1, y: 2, anchor: .center)
+                .padding(.bottom, 20)
+        }
+        .containerBackground(for: .widget) {
+            Color(red: 0.80, green: 0.70, blue: 0.55)
         }
     }
 }
