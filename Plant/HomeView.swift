@@ -57,7 +57,7 @@ struct HomeView: View {
                              
                 let intake = hd.getTotalIntakeFormatted()
                 let goal = hd.getDailyGoalFormatted()
-                Text("\(intake) / \(goal) oz")
+                Text("\(intake) / \(goal)")
                     .font(.system(.headline, design:.default))
                     .foregroundColor(PlantApp.colors.darkbrown)
                 
