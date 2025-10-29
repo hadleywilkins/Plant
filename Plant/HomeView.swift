@@ -37,8 +37,13 @@ struct HomeView: View {
             
             VStack(spacing: 20) {
                 
+                let screenWidth  = UIScreen.main.bounds.width
+                
                 SpriteView(scene: plantScene, options: [.allowsTransparency])
-                    .frame(width: 400, height: 400)
+                    .frame(maxWidth: screenWidth)
+                    .padding(.all, 0)
+                    .aspectRatio(1, contentMode: .fit)
+                    .ignoresSafeArea(edges: .horizontal)
                     .onChange(of: hd.waterIntake) {
                         plantScene.plantHealth = hd.waterIntake / hd.dailyGoal
                         plantScene.startSwayingLeaves()
