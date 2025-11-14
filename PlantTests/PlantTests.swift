@@ -64,6 +64,51 @@ class PlantTests {
         
     }
     
+    @Test func testSwitchUnitMinOuncesToLiters() async throws {
+        let hd = HydrationData()
+        
+        let dailyGoal_oz = 64.0
+        let glassSize_oz = 4.0
+        
+        hd.waterIntake = 0
+        hd.dailyGoal = 1892.71 //64 oz in mL
+        hd.unit = HydrationData.Unit.ounces
+        hd.glassSize = 118.294  //4 oz in mL
+        
+        hd.switchUnit(to: HydrationData.Unit.liters)
+        #expect(hd.getGlassSizeFormatted() == "0.25 L")
+        
+//        hd.updateGlassSize(newSize: 128.0)
+
+        hd.resetDailyIntake()
+        #expect(hd.waterIntake == 0)
+        #expect(hd.getTotalIntakeFormatted() == "0.00 L")
+    }
+    
+    @Test func resetLiters() async throws {
+        let hd = HydrationData()
+        
+        hd.resetDailyIntake()
+        #expect(hd.waterIntake == 0)
+    }
+    
+//    @Test func testSwitchUnitMaxLitersToOunces() async throws {
+//        let hd = HydrationData()
+//        
+//        let dailyGoal_l = 5.0
+//        let glassSize_l = 2.0
+//        
+//        hd.waterIntake = 0
+//        hd.dailyGoal = 0.005 //5 L in mL
+//        hd.unit = HydrationData.Unit.liters
+//        hd.glassSize = 0.002  //2 L in mL
+//        
+//        hd.switchUnit(to: HydrationData.Unit.liters)
+//        #expect(hd.getGlassSizeFormatted() == "0.25 L")
+//        
+//        hd.updateGlassSize(newSize: 128.0)
+//    }
+    
     deinit {
         HydrationData().waterIntake = waterIntake
         HydrationData().dailyGoal = dailyGoal
