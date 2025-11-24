@@ -75,14 +75,22 @@ struct widView: View {
 
     var body: some View {
         
+        
         VStack {
+            Text("Water Intake:")
+                .font(.system(.title, design: .serif))
+                .fontWidth(.compressed)
+                .fontWeight(.bold)
+                .foregroundColor(Color(red: 0.36, green: 0.25, blue: 0.20))
+                .padding(.top, 20)
+            
             Image(plantImageName)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 220, height: 220)
             
             
-            Text("Water Intake: ")
+            Text("\(entry.intake) / \(entry.goal)")
                 .font(.system(.title, design: .serif))
                 .fontWidth(.compressed)
                 .fontWeight(.bold)
@@ -91,7 +99,7 @@ struct widView: View {
             ProgressView(value: Double(entry.intake), total: Double(entry.goal))
                 .progressViewStyle(LinearProgressViewStyle(tint: .blue))
                 .scaleEffect(x: 1, y: 2, anchor: .center)
-                .padding(.bottom, 20)
+                .padding(.bottom, 10)
         }
         .containerBackground(for: .widget) {
             Color(red: 0.80, green: 0.70, blue: 0.55)
