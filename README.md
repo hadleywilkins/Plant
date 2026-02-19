@@ -44,4 +44,6 @@ Rishika Kundu
 Savannah Haugen  
 Hadley Wilkins  
 Bambi Nguyen  
-Rocky Slaymaker  
+Rocky Slaymaker
+Nurain Jiwani
+Kendall Sullivan
