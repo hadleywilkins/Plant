@@ -15,9 +15,9 @@ class HydrationData: ObservableObject {
     let widgetData = UserDefaults(suiteName: "group.com.resariha.plantwidget")
     
     @AppStorage("waterIntake") var waterIntake: Double = 0 //Store in mL
-    @AppStorage("dailyGoal") var dailyGoal: Double = 2000  // daily goal (in mL)
+    @AppStorage("dailyGoal") var dailyGoal: Double = 1892.71  //64 oz daily goal (in mL)
     @AppStorage("unit") var unit: Unit = .ounces  // Default unit
-    @AppStorage("glassSize") var glassSize: Double = 250 // Default glass size in mL
+    @AppStorage("glassSize") var glassSize: Double = 236.588 //8 oz default glass size in mL
     
     enum Unit: String {
         case ounces = "oz"
